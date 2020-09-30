@@ -2,29 +2,35 @@
 
 declare(strict_types = 1);
 
-include 'Card.php';
 include 'Validator.php';
 
 class CsvToObjectArray
 {
-	public function read($csvFileName, $className)
+	public function __construct()
 	{
+		$this->validator = new Validator();
+	}
+
+	public function read($className)
+	{
+		include $className . ".php";
+
+		$csvFileName = $className . "s.csv";
+
 		$handle = fopen($csvFileName, 'r');
 
 		$headers = fgetcsv($handle);
-
-		$validator = new Validator();
 
 		$expectedHeaders = [];
 
 		$class = new ReflectionClass($className);
 		$classConstructorParams = $class->getConstructor()->getParameters();
 		foreach($classConstructorParams as $param){
-			$validator->validateParamTypeString($param);
+			$this->validator->validateParamTypeString($param);
 			array_push($expectedHeaders, $param->name);
 		}
 
-		$validator->validateCsvHeaderNames($expectedHeaders, $headers);
+		$this->validator->validateCsvHeaderNames($expectedHeaders, $headers);
 
 		$results = [];
 		$count = 0;
@@ -45,5 +51,5 @@ class CsvToObjectArray
 }
 
 $csvToObjectArray = new CsvToObjectArray();
-$results = $csvToObjectArray->read('db.csv', 'Card');
+$results = $csvToObjectArray->read('Card');
 var_dump($results);
