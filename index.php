@@ -6,39 +6,32 @@ include 'Validator.php';
 
 class CsvToObjectArray
 {
-	protected string $csvFilename;
+	protected object $validator;
 
-	protected array $expectedCsvHeaders = [];
+	protected array $expectedCsvHeaders;
 
-	protected array $actualCsvHeaders = [];
 
 	public function __construct()
 	{
 		$this->validator = new Validator();
 	}
 
-	public function read($className)
+
+	public function read(string $className): array
 	{
 		include $className . ".php";
 
-		$this->csvFilename = $className . "s.csv";
+		$csvFilename = $className . "s.csv";
 
-		$reflectionClass = new ReflectionClass($className);
+		$handle = fopen($csvFilename, 'r');
 
-		$handle = fopen($this->csvFilename, 'r');
+		$actualCsvHeaders = fgetcsv($handle);
 
-		$this->actualCsvHeaders = fgetcsv($handle);
+		$this->setExpectedCsvHeadersFromClassConstructor($className);
 
-		$classConstructorParams = $reflectionClass->getConstructor()->getParameters();
+		$this->validator->validateCsvHeaders($this->expectedCsvHeaders, $actualCsvHeaders);
 
-		foreach($classConstructorParams as $param){
-			$this->validator->validateParamTypeString($param);
-			array_push($this->expectedCsvHeaders, $param->name);
-		}
-
-		$this->validator->validateCsvHeaders($this->expectedCsvHeaders, $this->actualCsvHeaders);
-
-		$this->results = [];
+		$results = [];
 
 		$count = 0;
 
@@ -57,6 +50,30 @@ class CsvToObjectArray
 		fclose($handle);
 
 		return $results;
+	}
+
+
+	protected function setExpectedCsvHeadersFromClassConstructor(string $className): void
+	{
+		$this->expectedCsvHeaders = [];
+
+		$reflectionClass = new ReflectionClass($className);
+
+		$classConstructorParams = $reflectionClass->getConstructor()->getParameters();
+
+		$count = 0;
+
+		foreach($classConstructorParams as $param){
+
+			$this->validator->validateParamTypeString($param);
+
+			$this->expectedCsvHeaders[$count] = $param->name;
+
+			++$count;
+
+		}
+
+		return;
 	}
 }
 
