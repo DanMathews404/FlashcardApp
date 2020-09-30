@@ -34,4 +34,38 @@ class Validator
             exit();
         }
 	}
+
+    public function validateReadableFiles(array $filenames): void
+    {
+		$inaccessibleFilenames = false;
+
+		foreach ($filenames as $filename){
+            if (!is_readable($filename)){
+	            echo "The required file " . $filename . " was not found to be readable.\n";
+				$inaccessibleFilenames = true;
+			}
+		}
+
+		if ($inaccessibleFilenames){
+            exit();
+		}
+    }
+
+	public function validateClassConstructorAndParamsExist(object $reflectionClass): void
+	{
+        try {
+            $reflectionClass->getConstructor()->getParameters();
+        } catch (Throwable $e) {
+            echo "Constructor in class not found\n";
+            exit();
+        }
+		try {
+			if ($reflectionClass->getConstructor()->getParameters() == null) {
+				throw new Exception();
+			}
+		} catch (Throwable $e) {
+			echo "No constructor parameters found.\n";
+			exit();
+		}
+	}
 }

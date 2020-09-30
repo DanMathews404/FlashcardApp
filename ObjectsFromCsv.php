@@ -6,28 +6,52 @@ include 'Validator.php';
 
 class ObjectsFromCsv
 {
+	protected string $className;
+
+	protected string $csvFilename;
+
+	protected string $classFilename;
+
 	protected object $validator;
+
+	protected object $reflectionClass;
 
 	protected array $expectedCsvHeaders;
 
+	protected array $classConstructorParams;
 
-	public function __construct()
+
+
+	public function __construct(string $className)
 	{
 		$this->validator = new Validator();
+
+		$this->className = $className;
+
+		$this->csvFilename = $className . "s.csv";
+
+		$this->classFilename = $className . ".php";
+
+		$this->validator->validateReadableFiles([$this->csvFilename, $this->classFilename]);
+
+		include $this->classFilename;
+
+		$this->reflectionClass = new ReflectionClass($className);
+
+		$this->validator->validateClassConstructorAndParamsExist($this->reflectionClass);
+
+		$this->classConstructorParams = $this->reflectionClass->getConstructor()->getParameters();
+
+		$this->setExpectedCsvHeadersFromClassConstructor();
 	}
 
 
-	public function run(string $className): array
+
+	public function run(): array
 	{
-		include $className . ".php";
-
-		$csvFilename = $className . "s.csv";
-
-		$handle = fopen($csvFilename, 'r');
+		$handle = fopen($this->csvFilename, 'r');
 
 		$actualCsvHeaders = fgetcsv($handle);
-
-		$this->setExpectedCsvHeadersFromClassConstructor($className);
 
 		$this->validator->validateCsvHeaders($this->expectedCsvHeaders, $actualCsvHeaders);
 
@@ -42,7 +66,7 @@ class ObjectsFromCsv
 				continue;
 			}
 
-			$results[$count] = new Card(...$row);
+			$results[$count] = $this->reflectionClass->newInstance(...$row);
 
 			++$count;
 		}
@@ -53,24 +77,19 @@ class ObjectsFromCsv
 	}
 
 
-	protected function setExpectedCsvHeadersFromClassConstructor(string $className): void
+
+	protected function setExpectedCsvHeadersFromClassConstructor(): void
 	{
 		$this->expectedCsvHeaders = [];
 
-		$reflectionClass = new ReflectionClass($className);
-
-		$classConstructorParams = $reflectionClass->getConstructor()->getParameters();
-
 		$count = 0;
 
-		foreach($classConstructorParams as $param){
-
+		foreach($this->classConstructorParams as $param){
 			$this->validator->validateParamTypeString($param);
 
 			$this->expectedCsvHeaders[$count] = $param->name;
 
 			++$count;
-
 		}
 
 		return;

@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 include 'ObjectsFromCsv.php';
 
-$objectsFromCsv = new ObjectsFromCsv();
+$colourObjectsFromCsv = new ObjectsFromCsv('Colour');
 
-$results = $objectsFromCsv->run('Card');
+$results = $colourObjectsFromCsv->run();
 
 var_dump($results);
