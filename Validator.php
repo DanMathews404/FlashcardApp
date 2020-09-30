@@ -21,11 +21,16 @@ class Validator
 	public function validateParamTypeString($param)
 	{
         try {
-            if ($param->getType()->getName() !== 'string'){
+            if (
+				$param->getType() == null ||
+				$param->getType()->getName() == 'string'
+			){
+				return;
+			} else {
                 throw new Exception();
             }
         } catch (Throwable $e){
-            echo "Type of anything but string not allowed\n";
+            echo "All constructor parameters in the class must be of unspecified type, or specified as a string type\n";
             exit();
         }
 	}
