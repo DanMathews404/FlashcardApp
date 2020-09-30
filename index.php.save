@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types = 1);
+
+include 'Card.php';
+include 'Validator.php';
+
+$card1 = new Card('cat', 'what cat?', 'That cat.');
+
+$handle = fopen('db.csv', 'r');
+
+$headers = fgetcsv($handle);
+
+$expectedHeaders = ['id', 'category', 'question', 'answer'];
+
+$validator = new Validator();
+$validator->validateCsvHeaders($expectedHeaders, $headers);
+
+$results = [];
+
+while (!feof($handle)){
+	$row = fgetcsv($handle);
+	if (!$row){
+		continue;
+	}
+	for ($i = 0; $i < count($row); $i ++){
+}
+}
+
+var_dump($results);
+
+fclose($handle);

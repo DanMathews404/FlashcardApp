@@ -2,7 +2,7 @@
 
 class Validator
 {
-    public function validateCsvHeaderNames (array $expectedHeaders, array $headers): void
+    public function validateCsvHeaders (array $expectedHeaders, array $headers): void
     {
         try {
             if ($headers !== $expectedHeaders){

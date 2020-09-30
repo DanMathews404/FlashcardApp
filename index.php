@@ -6,6 +6,12 @@ include 'Validator.php';
 
 class CsvToObjectArray
 {
+	protected string $csvFilename;
+
+	protected array $expectedCsvHeaders = [];
+
+	protected array $actualCsvHeaders = [];
+
 	public function __construct()
 	{
 		$this->validator = new Validator();
@@ -15,32 +21,36 @@ class CsvToObjectArray
 	{
 		include $className . ".php";
 
-		$csvFileName = $className . "s.csv";
+		$this->csvFilename = $className . "s.csv";
 
-		$handle = fopen($csvFileName, 'r');
+		$reflectionClass = new ReflectionClass($className);
 
-		$headers = fgetcsv($handle);
+		$handle = fopen($this->csvFilename, 'r');
 
-		$expectedHeaders = [];
+		$this->actualCsvHeaders = fgetcsv($handle);
 
-		$class = new ReflectionClass($className);
-		$classConstructorParams = $class->getConstructor()->getParameters();
+		$classConstructorParams = $reflectionClass->getConstructor()->getParameters();
+
 		foreach($classConstructorParams as $param){
 			$this->validator->validateParamTypeString($param);
-			array_push($expectedHeaders, $param->name);
+			array_push($this->expectedCsvHeaders, $param->name);
 		}
 
-		$this->validator->validateCsvHeaderNames($expectedHeaders, $headers);
+		$this->validator->validateCsvHeaders($this->expectedCsvHeaders, $this->actualCsvHeaders);
 
-		$results = [];
+		$this->results = [];
+
 		$count = 0;
 
 		while (!feof($handle)){
 			$row = fgetcsv($handle);
+
 			if (!$row){
 				continue;
 			}
+
 			$results[$count] = new Card(...$row);
+
 			++$count;
 		}
 
