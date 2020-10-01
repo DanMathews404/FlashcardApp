@@ -2,8 +2,6 @@
 
 declare(strict_types = 1);
 
-include 'Validator.php';
-
 class Model
 {
 	protected string $className;
