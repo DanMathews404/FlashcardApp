@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 class Validator
 {
     public function validateCsvHeaders (array $expectedHeaders, array $headers): void
