@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 include 'Validator.php';
 
-class ObjectsFromCsv
+class Model
 {
 	protected string $className;
 
@@ -47,7 +47,7 @@ class ObjectsFromCsv
 
 
 
-	public function run(): array
+	public function getData(): array
 	{
 		$handle = fopen($this->csvFilename, 'r');
 
