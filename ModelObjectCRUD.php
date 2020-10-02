@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-class Model
+class ModelObjectCRUD
 {
 	protected string $className;
 
@@ -45,7 +45,7 @@ class Model
 
 
 
-	public function getData(): array
+	public function read(): array
 	{
 		$handle = fopen($this->csvFilename, 'r');
 

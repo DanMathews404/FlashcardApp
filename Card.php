@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-class Card extends Model
+class Card
 {
 	public $id;
 
