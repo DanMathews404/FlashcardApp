@@ -9,7 +9,7 @@ class CardController
 		$this->cardObjectCRUD = new ModelObjectCRUD('Card');
 	}
 
-	public function index()
+	public function index(): void
 	{
 		$cards = $this->cardObjectCRUD->read();
 
