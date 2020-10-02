@@ -9,16 +9,12 @@ class App
 		spl_autoload_register(function ($class){
     		include $class . '.php';
 		});
+
+		$this->cardController = new CardController();
 	}
 
 	public function run()
 	{
-		$cardModel = new Model('Card');
-
-		$cards = $cardModel->getData();
-
-		$cardsView = new CardsView($cards);
-
-		$cardsView->display();
+		$this->cardController->index();
 	}
 }

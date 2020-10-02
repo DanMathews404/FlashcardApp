@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 class CardsView
 {
-	public function __construct($cards)
+	public function __construct(array $cards)
 	{
 		$this->cards = $cards;
 	}
 
-	public function display()
+	public function display(): void
 	{
 		?>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
