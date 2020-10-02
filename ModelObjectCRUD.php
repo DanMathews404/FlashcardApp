@@ -32,8 +32,6 @@ class ModelObjectCRUD
 
 		$this->validator->validateReadableFiles([$this->csvFilename, $this->classFilename]);
 
-		include $this->classFilename;
-
 		$this->reflectionClass = new ReflectionClass($className);
 
 		$this->validator->validateClassConstructorAndParamsExist($this->reflectionClass);
