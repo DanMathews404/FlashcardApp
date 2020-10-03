@@ -81,7 +81,7 @@ class ModelObjectCRUD
 		foreach ($this->classConstructorParams as $param){
 			$paramName = $param->name;
 
-			$fields[$param->name] = $object->$paramName;
+			$fields[$paramName] = $object->$paramName;
 		}
 
 		$handle = fopen($this->csvFilename, 'a');
