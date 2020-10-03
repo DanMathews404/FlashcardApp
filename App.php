@@ -15,6 +15,18 @@ class App
 
 	public function run()
 	{
-		$this->cardController->index();
+		$uri = $_SERVER[REQUEST_URI];
+
+		if (preg_match('/^\/index$/', $uri) == 1) {
+			$this->cardController->index();
+		}
+
+		if (preg_match('/^\/createForm$/', $uri) == 1) {
+			$this->cardController->createForm();
+		}
+
+		if (preg_match('/^\/create$/', $uri) == 1) {
+			$this->cardController->create();
+		}
 	}
 }
