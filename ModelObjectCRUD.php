@@ -74,10 +74,7 @@ class ModelObjectCRUD
 
 	public function create(object $object): void
 	{
-		if (get_class($object) !== $this->className){
-			echo "object passed isn't of correct object class";
-			exit;
-		}
+		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
 
 		$fields = [];
 

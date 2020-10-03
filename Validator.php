@@ -98,4 +98,12 @@ class Validator
             exit();
         }
 	}
+
+	public function validateObjectIsInstanceOfClass($object, $className)
+	{
+        if (get_class($object) !== $className){
+            echo "object passed isn't of correct object class";
+            exit;
+        }
+	}
 }
