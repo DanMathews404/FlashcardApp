@@ -23,14 +23,16 @@ class CardController
 		//show individual record
 	}
 
-	public function create()
+	public function createForm()
 	{
-		//return create view
+		include 'createForm.php';
 	}
 
-	public function store()
+	public function create()
 	{
-		//store new record
+		$card = new Card($_POST['id'], $_POST['category'], $_POST['question'], $_POST['answer']);
+
+		$this->cardObjectCRUD->create($card);
 	}
 
 	public function edit()

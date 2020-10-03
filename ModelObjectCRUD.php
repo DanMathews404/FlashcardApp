@@ -32,13 +32,15 @@ class ModelObjectCRUD
 
 		$this->validator->validateReadableFiles([$this->csvFilename, $this->classFilename]);
 
-		$this->reflectionClass = new ReflectionClass($className);
+		$this->reflectionClass = $this->validator->validReflectionClass($className);
 
 		$this->validator->validateClassConstructorAndParamsExist($this->reflectionClass);
 
 		$this->classConstructorParams = $this->reflectionClass->getConstructor()->getParameters();
 
-		$this->setExpectedCsvHeadersFromClassConstructor();
+		$this->validator->validateParamsTypeString($this->classConstructorParams);
+
+		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFilename);
 	}
 
 
@@ -47,9 +49,7 @@ class ModelObjectCRUD
 	{
 		$handle = fopen($this->csvFilename, 'r');
 
-		$actualCsvHeaders = fgetcsv($handle);
-
-		$this->validator->validateCsvHeaders($this->expectedCsvHeaders, $actualCsvHeaders);
+		$headers = fgetcsv($handle);
 
 		$results = [];
 
@@ -72,22 +72,23 @@ class ModelObjectCRUD
 		return $results;
 	}
 
-
-
-	protected function setExpectedCsvHeadersFromClassConstructor(): void
+	public function create(object $object): void
 	{
-		$this->expectedCsvHeaders = [];
+		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
 
-		$count = 0;
+		$fields = [];
 
-		foreach($this->classConstructorParams as $param){
-			$this->validator->validateParamTypeString($param);
+		foreach ($this->classConstructorParams as $param){
+			$paramName = $param->name;
 
-			$this->expectedCsvHeaders[$count] = $param->name;
-
-			++$count;
+			$fields[$paramName] = $object->$paramName;
 		}
 
-		return;
+		$handle = fopen($this->csvFilename, 'a');
+
+		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
+		fputcsv($handle, $fields);
+
+		fclose($handle);
 	}
 }

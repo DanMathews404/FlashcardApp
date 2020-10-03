@@ -17,15 +17,11 @@ class CardsView
         <script>
             $(document).ready(function(){
 
-                $(".question").click(function(){
-                    $(this).toggle();
-                    $(this).siblings(".answer").toggle();
+                $(".card").click(function(){
+                    $(this).find(".question").toggle();
+                    $(this).find(".answer").toggle();
                 });
 
-                $(".answer").click(function(){
-                    $(this).toggle();
-                    $(this).siblings(".question").toggle();
-                });
             });
         </script>
 
@@ -49,7 +45,7 @@ class CardsView
         <?php
         foreach($this->cards as $card){
         ?>
-            <div>
+            <div class="card">
                 <table style="width:100%;">
                     <tr>
                         <td style="width:50%;"><?php echo "Category: " . $card->category;?></td>
