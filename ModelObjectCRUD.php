@@ -78,38 +78,12 @@ class ModelObjectCRUD
 
 		$fields = $this->getFieldDataFromObject($object);
 
-//		$LastLineId = $this->getLastLineId();
-
-//		$fields['id'] = $LastLineId + 1;
-
 		$handle = fopen($this->csvFilename, 'a');
 
 		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
 		fputcsv($handle, $fields);
 
 		fclose($handle);
-	}
-
-	protected function getLastLineId(): int
-	{
-		$handle = fopen($this->csvFilename, 'r');
-
-        $count = 2;
-
-        while($toEndOfLine !== PHP_EOL){
-            fseek($handle, filesize($this->csvFilename) - $count);
-
-            $toEndOfLine = fgets($handle);
-
-            $count++;
-        }
-
-        $lastLine = fgetcsv($handle);
-
-		fclose($handle);
-
-        return intval($lastLine[0]);
-
 	}
 
 	protected function getFieldDataFromObject($object): array
