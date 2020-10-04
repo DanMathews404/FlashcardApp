@@ -47,14 +47,22 @@ class IncrementalIdGenerator
 
 	protected function findClassLine($handle): void
 	{
+		$found = false;
+
 		while ($line !== false){
 			$startOfLine = ftell($handle);
 
 			$line = fgetcsv($handle);
 
 			if ($line[0] == $this->className){
+				$found = true;
 				break;
 			}
+		}
+
+		if ($found == false){
+			echo "No line matching class '" . $this->className . "' in '" . $this->filename . "'";
+			exit();
 		}
 
 		$this->classLine = $line;
