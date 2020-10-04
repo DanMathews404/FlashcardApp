@@ -76,13 +76,11 @@ class ModelObjectCRUD
 	{
 		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
 
-		$fields = [];
+		$fields = $this->getFieldDataFromObject($object);
 
-		foreach ($this->classConstructorParams as $param){
-			$paramName = $param->name;
+//		$LastLineId = $this->getLastLineId();
 
-			$fields[$paramName] = $object->$paramName;
-		}
+//		$fields['id'] = $LastLineId + 1;
 
 		$handle = fopen($this->csvFilename, 'a');
 
@@ -91,4 +89,40 @@ class ModelObjectCRUD
 
 		fclose($handle);
 	}
+
+	protected function getLastLineId(): int
+	{
+		$handle = fopen($this->csvFilename, 'r');
+
+        $count = 2;
+
+        while($toEndOfLine !== PHP_EOL){
+            fseek($handle, filesize($this->csvFilename) - $count);
+
+            $toEndOfLine = fgets($handle);
+
+            $count++;
+        }
+
+        $lastLine = fgetcsv($handle);
+
+		fclose($handle);
+
+        return intval($lastLine[0]);
+
+	}
+
+	protected function getFieldDataFromObject($object): array
+	{
+		$fields = [];
+
+		foreach ($this->classConstructorParams as $param){
+			$paramName = $param->name;
+
+			$fields[$paramName] = $object->$paramName;
+		}
+
+		return $fields;
+	}
+
 }
