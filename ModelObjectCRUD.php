@@ -98,5 +98,4 @@ class ModelObjectCRUD
 
 		return $fields;
 	}
-
 }

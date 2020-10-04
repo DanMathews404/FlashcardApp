@@ -6,21 +6,17 @@ class IncrementalIdGenerator
 {
 	public function __construct(string $className)
 	{
+		$this->validator = new Validator();
+
 		$this->filename = 'IncrementalIdGenerator.csv';
 
 		$this->className = $className;
 
-//		$this->validator->validateReadableFiles([$this->filename]);
+		$this->validator->validateReadableFiles([$this->filename]);
 
-//		$this->reflectionClass = $this->validator->validReflectionClass($className);
+		$this->validator->validateWritableFiles([$this->filename]);
 
-//		$this->validator->validateClassConstructorAndParamsExist($this->reflectionClass);
-
-//		$this->classConstructorParams = $this->reflectionClass->getConstructor()->getParameters();
-
-//		$this->validator->validateParamsTypeString($this->classConstructorParams);
-
-//		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFilename);
+		$this->validator->validateHeadersAreExpected(['model', 'id'], $this->filename);
 	}
 
 	public function getNext(): string
