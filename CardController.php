@@ -7,6 +7,7 @@ class CardController
 	public function __construct()
 	{
 		$this->cardObjectCRUD = new ModelObjectCRUD('Card');
+		$this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
 	}
 
 	public function index(): void
@@ -30,9 +31,18 @@ class CardController
 
 	public function create()
 	{
-		$card = new Card($_POST['id'], $_POST['category'], $_POST['question'], $_POST['answer']);
+		$id = $this->incrementalIdGenerator->getNext();
+
+		$card = new Card(
+			$id,
+			$_POST['category'],
+			$_POST['question'],
+			$_POST['answer']
+		);
 
 		$this->cardObjectCRUD->create($card);
+
+		$this->incrementalIdGenerator->set($id);
 	}
 
 	public function edit()

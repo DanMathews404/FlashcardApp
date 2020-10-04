@@ -76,6 +76,18 @@ class ModelObjectCRUD
 	{
 		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
 
+		$fields = $this->getFieldDataFromObject($object);
+
+		$handle = fopen($this->csvFilename, 'a');
+
+		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
+		fputcsv($handle, $fields);
+
+		fclose($handle);
+	}
+
+	protected function getFieldDataFromObject($object): array
+	{
 		$fields = [];
 
 		foreach ($this->classConstructorParams as $param){
@@ -84,11 +96,6 @@ class ModelObjectCRUD
 			$fields[$paramName] = $object->$paramName;
 		}
 
-		$handle = fopen($this->csvFilename, 'a');
-
-		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
-		fputcsv($handle, $fields);
-
-		fclose($handle);
+		return $fields;
 	}
 }

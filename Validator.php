@@ -49,6 +49,22 @@ class Validator
 		}
 	}
 
+	public function validateWritableFiles(array $filenames): void
+	{
+		$inaccessibleFilenames = false;
+
+		foreach ($filenames as $filename){
+			if (!is_writable($filename)){
+				echo "The required file " . $filename . " was not found to be writable.<br>";
+				$inaccessibleFilenames = true;
+			}
+		}
+
+		if ($inaccessibleFilenames){
+			exit();
+		}
+	}
+
 	public function validateClassConstructorAndParamsExist(object $reflectionClass): void
 	{
 		try {
@@ -79,6 +95,11 @@ class Validator
 			++$count;
 		}
 
+		$this->validateHeadersAreExpected($expectedCsvHeaders, $csvFilename);
+	}
+
+	public function validateHeadersAreExpected($expectedCsvHeaders, $csvFilename)
+	{
 		$handle = fopen($csvFilename, 'r');
 
 		$actualCsvHeaders = fgetcsv($handle);
