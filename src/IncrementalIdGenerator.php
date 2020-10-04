@@ -2,13 +2,15 @@
 
 declare(strict_types = 1);
 
+namespace Flashcard;
+
 class IncrementalIdGenerator
 {
 	public function __construct(string $className)
 	{
 		$this->validator = new Validator();
 
-		$this->filename = 'IncrementalIdGenerator.csv';
+		$this->filename = 'src/IncrementalIdGenerator.csv';
 
 		$this->className = $className;
 

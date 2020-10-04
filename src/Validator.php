@@ -2,14 +2,16 @@
 
 declare(strict_types = 1);
 
+namespace Flashcard;
+
 class Validator
 {
 	public function validReflectionClass($className)
 	{
 		try {
-			return new ReflectionClass($className);
+			return new \ReflectionClass(__NAMESPACE__ . '\\' . $className);
 		} catch (Throwable $e){
-			echo "The Class was not found.";
+			echo "The Class was not found. It must be in the same namespace as the validator";
 			exit();
 		}
 	}
@@ -122,8 +124,8 @@ class Validator
 
 	public function validateObjectIsInstanceOfClass($object, $className)
 	{
-		if (get_class($object) !== $className){
-			echo "object passed isn't of correct object class";
+		if (get_class($object) !== __NAMESPACE__ . '\\' . $className){
+			echo "object passed isn't of correct object class, or isn't in the correct namespace";
 			exit;
 		}
 	}

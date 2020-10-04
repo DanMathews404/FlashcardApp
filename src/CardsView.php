@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+namespace Flashcard;
+
 class CardsView
 {
 	public function __construct(array $cards)
