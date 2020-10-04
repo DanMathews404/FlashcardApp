@@ -2,8 +2,8 @@
 
 declare(strict_types = 1);
 
-include 'App.php';
+require 'vendor/autoload.php';
 
-$app = new App();
+$app = new Flashcard\App();
 
 $app->run();

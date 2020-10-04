@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+namespace Flashcard;
+
 class ModelObjectCRUD
 {
 	protected string $className;
@@ -26,9 +28,9 @@ class ModelObjectCRUD
 
 		$this->className = $className;
 
-		$this->csvFilename = $className . "s.csv";
+		$this->csvFilename = "src//" .  $className . "s.csv";
 
-		$this->classFilename = $className . ".php";
+		$this->classFilename = "src//" . $className . ".php";
 
 		$this->validator->validateReadableFiles([$this->csvFilename, $this->classFilename]);
 

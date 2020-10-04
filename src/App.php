@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+namespace Flashcard;
+
 class App
 {
 	public function __construct()
