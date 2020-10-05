@@ -1,11 +1,11 @@
 <?php
 
 use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
+	Behat\Behat\Context\TranslatedContextInterface,
+	Behat\Behat\Context\BehatContext,
+	Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+	Behat\Gherkin\Node\TableNode;
 
 //
 // Require 3rd-party libraries here:
@@ -19,36 +19,34 @@ use Behat\Gherkin\Node\PyStringNode,
  */
 class FeatureContext extends BehatContext
 {
-    /**
-     * Initializes context.
-     * Every scenario gets its own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
-     */
-    public function __construct(array $parameters)
-    {
-        // Initialize your context here
-    }
+	/**
+	 * Initializes context.
+	 * Every scenario gets its own context object.
+	 *
+	 * @param array $parameters context parameters (set them up through behat.yml)
+	 */
+	public function __construct(array $parameters)
+	{
+		// Initialize your context here
+	}
 
-    /**
-     * @Given /^I am on the "([^"]*)" page$/
-     */
-    public function iAmOnThePage($page)
-    {
-//        include 'src/App.php';
+	/**
+	 * @Given /^I am on the "([^"]*)" page$/
+	 */
+	public function iAmOnThePage($page)
+	{
 		require 'vendor/autoload.php';
 
-        $this->app = new Flashcard\App();
-    }
+		$this->app = new Flashcard\App();
+	}
 
-    /**
-     * @Then /^I should receive a list of flashcards$/
-     */
-    public function iShouldReceiveAListOfFlashcards()
-    {
-        if (!is_a($this->app->cardController->cardObjectCRUD->read()[0], 'Flashcard\Card')){
-			var_dump($this->app->cardController->cardObjectCRUD->read()[0]);
-            throw new Exception("ModelObjectCRUD didn't return a Card object to CardController index");
-        }
-    }
+	/**
+	 * @Then /^I should receive a list of flashcards$/
+	 */
+	public function iShouldReceiveAListOfFlashcards()
+	{
+		if (!is_a($this->app->cardController->cardObjectCRUD->read()[0], 'Flashcard\Card')){
+			throw new Exception("ModelObjectCRUD didn't return a Card object to CardController index");
+		}
+	}
 }
