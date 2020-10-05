@@ -4,11 +4,10 @@
 			"Flashcard\\": "src"
 		}
 	},
-    "require-dev": {
-        "behat/behat": "~2.5"
-    },
-    "config": {
-        "bin-dir": "bin/"
-    }
+	"require-dev": {
+		"behat/behat": "~2.5"
+	},
+	"config": {
+		"bin-dir": "bin/"
+	}
 }
-
