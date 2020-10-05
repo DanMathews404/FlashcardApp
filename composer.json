@@ -3,6 +3,12 @@
 		"psr-4": {
 			"Flashcard\\": "src"
 		}
-	}
+	},
+    "require-dev": {
+        "behat/behat": "~2.5"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
 }
 
