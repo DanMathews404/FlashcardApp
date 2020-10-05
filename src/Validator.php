@@ -16,7 +16,7 @@ class Validator
 		}
 	}
 
-	public function validateParamsTypeString(array $param): void
+	public function validateParamsTypeString(array $params): void
 	{
 		foreach ($params as $param) {
 			try {
