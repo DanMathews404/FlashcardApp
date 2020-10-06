@@ -4,14 +4,12 @@ declare(strict_types = 1);
 
 namespace Flashcard;
 
+include '.env.php';
+
 class App
 {
 	public function __construct()
 	{
-		spl_autoload_register(function ($class){
-			include $class . '.php';
-		});
-
 		$this->cardController = new CardController();
 	}
 
@@ -21,14 +19,13 @@ class App
 
 		if (preg_match('/^\/index$/', $uri) == 1) {
 			$this->cardController->index();
-		}
-
-		if (preg_match('/^\/createForm$/', $uri) == 1) {
+		} elseif (preg_match('/^\/createForm$/', $uri) == 1) {
 			$this->cardController->createForm();
-		}
-
-		if (preg_match('/^\/create$/', $uri) == 1) {
+		} elseif (preg_match('/^\/create$/', $uri) == 1) {
 			$this->cardController->create();
+		} else {
+			$this->redirect = new Redirect();
+			$this->redirect->go("/index");
 		}
 	}
 }

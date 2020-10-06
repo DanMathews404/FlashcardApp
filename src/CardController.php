@@ -45,6 +45,10 @@ class CardController
 		$this->cardObjectCRUD->create($card);
 
 		$this->incrementalIdGenerator->set($id);
+
+		$this->redirect = new Redirect();
+
+		$this->redirect->go("/index");
 	}
 
 	public function edit()
