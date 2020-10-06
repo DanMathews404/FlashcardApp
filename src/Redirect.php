@@ -15,12 +15,13 @@ class Redirect
 			$this->domain = getenv('APP_DOMAIN');
 		}
 	}
-    public function go($uri)
-    {
-        if ($this->domain == "localhost"){
-            header("Location: http://localhost:" . $_SERVER[SERVER_PORT] . $uri);
-        } else {
-            header("Location: http://" . $this->domain . $uri);
-        }
-    }
+
+	public function go($uri)
+	{
+		if ($this->domain == "localhost"){
+			header("Location: http://localhost:" . $_SERVER[SERVER_PORT] . $uri);
+		} else {
+			header("Location: http://" . $this->domain . $uri);
+		}
+	}
 }
