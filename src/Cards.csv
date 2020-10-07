@@ -1,5 +1,5 @@
 id,category,question,answer
 1,"Chapter 5","What happens if you pass a parameter of the wrong type to a function which uses a type declaration?","A TypeError Exception is thrown"
-2,"Chapter 5","What happens in PHP 7.1 (as opposed to 7.2) if you give a type declaration of 'object' for a parameter of a function?","PHP will expect an object of class 'object'. In PHP 7.2 (not in the test) PHP will an object of any class"
-3,"Chapter 5","What happens if you pass an object of a child class or implementation of the one specified in a parameter's type declaration?","A TypeError Exception is NOT thrown"
-4,"Chapter 5","What are the valid types you can declare for a parameter of a function?","The Class/interface name; self; array; callable; bool; float; int; string; iterable"
+2,"Chapter 5","What happens in PHP 7.1 (as opposed to 7.2) if you give a type declaration of 'object' for a parameter of a function?","PHP will expect an object of class 'object'. In PHP 7.2 (not in the test) PHP will expect an object of any class"
+3,"Chapter 5","What happens if you pass an object of a child class (or implementation) of the one specified in a parameter's type declaration?","A TypeError Exception is NOT thrown"
+4,"Chapter 5","What are the valid types you can declare for a parameter of a function?","class/interface name; self; array; callable; bool; float; int; string; iterable"
