@@ -6,19 +6,19 @@ namespace Flashcard;
 
 class ModelObjectCRUD
 {
-	protected string $className;
+	protected $className;
 
-	protected string $csvFilename;
+	protected $csvFilename;
 
-	protected string $classFilename;
+	protected $classFilename;
 
-	protected object $validator;
+	protected $validator;
 
-	protected object $reflectionClass;
+	protected $reflectionClass;
 
-	protected array $expectedCsvHeaders;
+	protected $expectedCsvHeaders;
 
-	protected array $classConstructorParams;
+	protected $classConstructorParams;
 
 
 
@@ -74,7 +74,7 @@ class ModelObjectCRUD
 		return $results;
 	}
 
-	public function create(object $object): void
+	public function create(Card $object): void
 	{
 		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
 

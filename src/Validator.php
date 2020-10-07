@@ -6,7 +6,7 @@ namespace Flashcard;
 
 class Validator
 {
-	public function validReflectionClass($className)
+	public function validReflectionClass(string $className): ?\ReflectionClass
 	{
 		try {
 			return new \ReflectionClass(__NAMESPACE__ . '\\' . $className);
@@ -67,7 +67,7 @@ class Validator
 		}
 	}
 
-	public function validateClassConstructorAndParamsExist(object $reflectionClass): void
+	public function validateClassConstructorAndParamsExist(\ReflectionClass $reflectionClass): void
 	{
 		try {
 			$reflectionClass->getConstructor()->getParameters();
@@ -85,7 +85,7 @@ class Validator
 		}
 	}
 
-	public function validateParamsAgainstCsv($params, $csvFilename)
+	public function validateParamsAgainstCsv(array $params, string $csvFilename): void
 	{
 		$expectedCsvHeaders = [];
 
@@ -100,7 +100,7 @@ class Validator
 		$this->validateHeadersAreExpected($expectedCsvHeaders, $csvFilename);
 	}
 
-	public function validateHeadersAreExpected($expectedCsvHeaders, $csvFilename)
+	public function validateHeadersAreExpected(array $expectedCsvHeaders, string $csvFilename): void
 	{
 		$handle = fopen($csvFilename, 'r');
 
@@ -122,7 +122,7 @@ class Validator
 		}
 	}
 
-	public function validateObjectIsInstanceOfClass($object, $className)
+	public function validateObjectIsInstanceOfClass($object, string $className)
 	{
 		if (get_class($object) !== __NAMESPACE__ . '\\' . $className){
 			echo "object passed isn't of correct object class, or isn't in the correct namespace";
