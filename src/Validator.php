@@ -85,7 +85,7 @@ class Validator
 		}
 	}
 
-	public function validateParamsAgainstCsv(array $params, string $csvFilename): void
+	public function validateParamsAgainstCsv(array $params, string $csvFilename)//: void
 	{
 		$expectedCsvHeaders = [];
 
@@ -98,6 +98,8 @@ class Validator
 		}
 
 		$this->validateHeadersAreExpected($expectedCsvHeaders, $csvFilename);
+
+		return $expectedCsvHeaders;
 	}
 
 	public function validateHeadersAreExpected(array $expectedCsvHeaders, string $csvFilename): void

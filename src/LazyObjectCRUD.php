@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Flashcard;
 
-class ModelObjectCRUD
+class LazyObjectCRUD
 {
 	protected $className;
 
@@ -26,6 +26,8 @@ class ModelObjectCRUD
 	{
 		$this->validator = new Validator();
 
+        $this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
+
 		$this->className = $className;
 
 		$this->csvFilename = "src//" .  $className . "s.csv";
@@ -42,7 +44,7 @@ class ModelObjectCRUD
 
 		$this->validator->validateParamsTypeString($this->classConstructorParams);
 
-		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFilename);
+		$this->params = $this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFilename);
 	}
 
 
@@ -74,9 +76,19 @@ class ModelObjectCRUD
 		return $results;
 	}
 
-	public function create(Card $object): void
+	public function create(...$params): void
 	{
-		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
+        $id = $this->incrementalIdGenerator->getNext();
+
+        $params[0] = $id;
+
+        for ($i = 1; $i < count($this->params); $i++){
+            $params[$i] = $_POST[$this->params[$i]];
+        }
+
+        $object = $this->reflectionClass->newInstance(...$params);
+
+//		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
 
 		$fields = $this->getFieldDataFromObject($object);
 
@@ -86,6 +98,8 @@ class ModelObjectCRUD
 		fputcsv($handle, $fields);
 
 		fclose($handle);
+
+        $this->incrementalIdGenerator->set($id);
 	}
 
 	protected function getFieldDataFromObject($object): array

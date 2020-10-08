@@ -8,8 +8,7 @@ class CardController
 {
 	public function __construct()
 	{
-		$this->cardObjectCRUD = new ModelObjectCRUD('Card');
-		$this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
+		$this->cardObjectCRUD = new LazyObjectCRUD('Card');
 	}
 
 	public function index(): void
@@ -33,18 +32,7 @@ class CardController
 
 	public function create()
 	{
-		$id = $this->incrementalIdGenerator->getNext();
-
-		$card = new Card(
-			$id,
-			$_POST['category'],
-			$_POST['question'],
-			$_POST['answer']
-		);
-
-		$this->cardObjectCRUD->create($card);
-
-		$this->incrementalIdGenerator->set($id);
+		$this->cardObjectCRUD->create();
 
 		$this->redirect = new Redirect();
 
