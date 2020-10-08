@@ -22,17 +22,19 @@ class LazyObjectCRUD
 
 
 
-	public function __construct()
+	public function __construct(string $className = null)
 	{
-	    $callingFileName = debug_backtrace()[0]['file'];
+	    if ($className == null) {
+            $callingFileName = debug_backtrace()[0]['file'];
 
-	    preg_match('/[^\\\]+(?=Controller.php)/', $callingFileName, $matches);
+            preg_match('/[^\\\]+(?=Controller.php)/', $callingFileName, $matches);
 
-	    if ($matches) {
-            $className = $matches[0];
-        } else {
-	        echo 'lazyObjectCRUD called from an incompatible filename';
-	        exit();
+            if ($matches) {
+                $className = $matches[0];
+            } else {
+                echo 'lazyObjectCRUD called from an incompatible filename';
+                exit();
+            }
         }
 
 		$this->validator = new Validator();
@@ -108,8 +110,8 @@ class LazyObjectCRUD
 		$lastCharacter = fread($handle, 1);
 
 		if($lastCharacter !== "\n"){
-            fwrite($handle, "\n");
-        }
+			fwrite($handle, "\n");
+		}
 
 		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
 		fputcsv($handle, $fields);
