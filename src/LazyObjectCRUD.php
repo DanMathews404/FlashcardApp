@@ -24,18 +24,18 @@ class LazyObjectCRUD
 
 	public function __construct(string $className = null)
 	{
-	    if ($className == null) {
-            $callingFileName = debug_backtrace()[0]['file'];
+		if ($className == null) {
+			$callingFileName = debug_backtrace()[0]['file'];
 
-            preg_match('/[^\\\]+(?=Controller.php)/', $callingFileName, $matches);
+			preg_match('/[^\\\]+(?=Controller.php)/', $callingFileName, $matches);
 
-            if ($matches) {
-                $className = $matches[0];
-            } else {
-                echo 'lazyObjectCRUD called from an incompatible filename';
-                exit();
-            }
-        }
+			if ($matches) {
+				$className = $matches[0];
+			} else {
+				echo 'lazyObjectCRUD called from an incompatible filename';
+				exit();
+			}
+		}
 
 		$this->validator = new Validator();
 
