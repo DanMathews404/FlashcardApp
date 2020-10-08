@@ -8,14 +8,16 @@ include '.env.php';
 
 class App
 {
-	public function __construct()
+    protected $cardController;
+
+    public function __construct()
 	{
 		$this->cardController = new CardController();
 	}
 
 	public function run()
 	{
-		$uri = $_SERVER[REQUEST_URI];
+		$uri = $_SERVER['REQUEST_URI'];
 
 		if (preg_match('/^\/index$/', $uri) == 1) {
 			$this->cardController->index();
