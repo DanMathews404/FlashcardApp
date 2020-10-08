@@ -99,11 +99,17 @@ class LazyObjectCRUD
 
 		$object = $this->reflectionClass->newInstance(...$params);
 
-//		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
-
 		$fields = $this->getFieldDataFromObject($object);
 
-		$handle = fopen($this->csvFilename, 'a');
+		$handle = fopen($this->csvFilename, 'a+');
+
+		fseek($handle, fstat($handle)['size'] - 1);
+
+		$lastCharacter = fread($handle, 1);
+
+		if($lastCharacter !== "\n"){
+            fwrite($handle, "\n");
+        }
 
 		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
 		fputcsv($handle, $fields);

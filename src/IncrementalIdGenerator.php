@@ -51,6 +51,8 @@ class IncrementalIdGenerator
 	{
 		$found = false;
 
+		$line = null;
+
 		while ($line !== false){
 			$startOfLine = ftell($handle);
 

@@ -10,7 +10,7 @@ class Validator
 	{
 		try {
 			return new \ReflectionClass(__NAMESPACE__ . '\\' . $className);
-		} catch (Throwable $e){
+		} catch (\Throwable $e){
 			echo "The Class was not found. It must be in the same namespace as the validator";
 			exit();
 		}
@@ -26,9 +26,9 @@ class Validator
 				){
 					continue;
 				} else {
-					throw new Exception();
+					throw new \Exception();
 				}
-			} catch (Throwable $e){
+			} catch (\Throwable $e){
 				echo "All constructor parameters in the class must be of unspecified type, or specified as a string type<br>";
 				exit();
 			}
@@ -71,15 +71,15 @@ class Validator
 	{
 		try {
 			$reflectionClass->getConstructor()->getParameters();
-		} catch (Throwable $e) {
+		} catch (\Throwable $e) {
 			echo "Constructor in class not found<br>";
 			exit();
 		}
 		try {
 			if ($reflectionClass->getConstructor()->getParameters() == null) {
-				throw new Exception();
+				throw new \Exception();
 			}
-		} catch (Throwable $e) {
+		} catch (\Throwable $e) {
 			echo "No constructor parameters found.<br>";
 			exit();
 		}
@@ -112,23 +112,15 @@ class Validator
 
 		try {
 			if ($actualCsvHeaders !== $expectedCsvHeaders){
-				throw new Exception();
+				throw new \Exception();
 			}
-		} catch (Throwable $e) {
+		} catch (\Throwable $e) {
 			echo "The headers of the csv were not the expected headers.<br>";
 			echo "Expected headers: " . implode(',', $expectedCsvHeaders);
 			echo "<br>";
 			echo "Actual headers: " . implode(',', $actualCsvHeaders);
 			echo "<br>";
 			exit();
-		}
-	}
-
-	public function validateObjectIsInstanceOfClass($object, string $className)
-	{
-		if (get_class($object) !== __NAMESPACE__ . '\\' . $className){
-			echo "object passed isn't of correct object class, or isn't in the correct namespace";
-			exit;
 		}
 	}
 }
