@@ -9,8 +9,8 @@ final class LazyObjectCRUDTest extends TestCase
 	public function testCanBeCreatedFromValidClassName(): void
 	{
 		$this->assertInstanceOf(
-            'Flashcard\LazyObjectCRUD',
-            new Flashcard\LazyObjectCRUD('Card')
+			'Flashcard\LazyObjectCRUD',
+			new Flashcard\LazyObjectCRUD('Card')
 		);
 	}
 

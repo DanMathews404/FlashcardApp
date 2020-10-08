@@ -26,11 +26,11 @@ class LazyObjectCRUD
 	{
 		$this->validator = new Validator();
 
-        $this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
+		$this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
 
 		$this->className = $className;
 
-		$this->csvFilename = "src//" .  $className . "s.csv";
+		$this->csvFilename = "src//" . $className . "s.csv";
 
 		$this->classFilename = "src//" . $className . ".php";
 
@@ -78,15 +78,15 @@ class LazyObjectCRUD
 
 	public function create(...$params): void
 	{
-        $id = $this->incrementalIdGenerator->getNext();
+		$id = $this->incrementalIdGenerator->getNext();
 
-        $params[0] = $id;
+		$params[0] = $id;
 
-        for ($i = 1; $i < count($this->params); $i++){
-            $params[$i] = $_POST[$this->params[$i]];
-        }
+		for ($i = 1; $i < count($this->params); $i++){
+			$params[$i] = $_POST[$this->params[$i]];
+		}
 
-        $object = $this->reflectionClass->newInstance(...$params);
+		$object = $this->reflectionClass->newInstance(...$params);
 
 //		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
 
@@ -99,7 +99,7 @@ class LazyObjectCRUD
 
 		fclose($handle);
 
-        $this->incrementalIdGenerator->set($id);
+		$this->incrementalIdGenerator->set($id);
 	}
 
 	protected function getFieldDataFromObject($object): array
