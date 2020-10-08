@@ -6,7 +6,11 @@ namespace Flashcard;
 
 class IncrementalIdGenerator
 {
-	public function __construct(string $className)
+    protected $className;
+
+    protected $startOfLine;
+
+    public function __construct(string $className)
 	{
 		$this->validator = new Validator();
 
@@ -52,6 +56,8 @@ class IncrementalIdGenerator
 		$found = false;
 
 		$line = null;
+
+        $startOfLine = null;
 
 		while ($line !== false){
 			$startOfLine = ftell($handle);
