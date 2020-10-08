@@ -6,7 +6,7 @@ namespace Flashcard;
 
 class Redirect
 {
-    protected $domain;
+	protected $domain;
 
 	public function __construct()
 	{

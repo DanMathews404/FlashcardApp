@@ -6,7 +6,7 @@ namespace Flashcard;
 
 class CardController
 {
-    protected $cardObjectCRUD;
+	protected $cardObjectCRUD;
 
 	public function __construct()
 	{

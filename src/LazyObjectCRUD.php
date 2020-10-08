@@ -20,10 +20,10 @@ class LazyObjectCRUD
 
 	protected $classConstructorParams;
 
-    protected $incrementalIdGenerator;
+	protected $incrementalIdGenerator;
 
 
-    public function __construct(string $className = null)
+	public function __construct(string $className = null)
 	{
 		if ($className == null) {
 			$callingFileName = debug_backtrace()[0]['file'];

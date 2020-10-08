@@ -8,9 +8,9 @@ include '.env.php';
 
 class App
 {
-    protected $cardController;
+	protected $cardController;
 
-    public function __construct()
+	public function __construct()
 	{
 		$this->cardController = new CardController();
 	}
