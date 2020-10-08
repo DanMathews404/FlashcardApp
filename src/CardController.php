@@ -8,7 +8,7 @@ class CardController
 {
 	public function __construct()
 	{
-		$this->cardObjectCRUD = new LazyObjectCRUD('Card');
+		$this->cardObjectCRUD = new LazyObjectCRUD();
 	}
 
 	public function index(): void

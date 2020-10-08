@@ -22,8 +22,19 @@ class LazyObjectCRUD
 
 
 
-	public function __construct(string $className)
+	public function __construct()
 	{
+	    $callingFileName = debug_backtrace()[0]['file'];
+
+	    preg_match('/[^\\\]+(?=Controller.php)/', $callingFileName, $matches);
+
+	    if ($matches) {
+            $className = $matches[0];
+        } else {
+	        echo 'lazyObjectCRUD called from an incompatible filename';
+	        exit();
+        }
+
 		$this->validator = new Validator();
 
 		$this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
