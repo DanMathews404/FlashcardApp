@@ -35,38 +35,6 @@ class Validator
 		}
 	}
 
-	public function validateReadableFiles(array $filenames): void
-	{
-		$inaccessibleFilenames = false;
-
-		foreach ($filenames as $filename){
-			if (!is_readable($filename)){
-				echo "The required file " . $filename . " was not found to be readable.<br>";
-				$inaccessibleFilenames = true;
-			}
-		}
-
-		if ($inaccessibleFilenames){
-			exit();
-		}
-	}
-
-	public function validateWritableFiles(array $filenames): void
-	{
-		$inaccessibleFilenames = false;
-
-		foreach ($filenames as $filename){
-			if (!is_writable($filename)){
-				echo "The required file " . $filename . " was not found to be writable.<br>";
-				$inaccessibleFilenames = true;
-			}
-		}
-
-		if ($inaccessibleFilenames){
-			exit();
-		}
-	}
-
 	public function validateClassConstructorAndParamsExist(\ReflectionClass $reflectionClass): void
 	{
 		try {

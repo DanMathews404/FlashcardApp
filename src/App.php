@@ -15,7 +15,7 @@ class App
 
 	public function run()
 	{
-		$uri = $_SERVER[REQUEST_URI];
+		$uri = $_SERVER['REQUEST_URI'];
 
 		if (preg_match('/^\/index$/', $uri) == 1) {
 			$this->cardController->index();
