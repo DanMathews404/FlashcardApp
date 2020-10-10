@@ -16,11 +16,11 @@ class IncrementalIdGenerator
 	{
 		$this->validator = new Validator();
 
-		$this->csvFile = new File ("src/IncrementalIdGenerator.csv");
+		$this->csvFile = new CSVFile ("src/IncrementalIdGenerator.csv");
 
 		$this->className = $className;
 
-		$this->validator->validateHeadersAreExpected(['model', 'id'], $this->csvFile->name);
+        $this->csvFile->validateHeaders(['model', 'id']);
 	}
 
 	public function getNext(): string

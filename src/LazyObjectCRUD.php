@@ -56,8 +56,6 @@ class LazyObjectCRUD
 
 		$this->validator->validateParamsTypeString($this->classConstructorParams);
 
-//		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFile->name);
-
 		$this->validateParamsAgainstHeaders();
 	}
 
@@ -147,8 +145,6 @@ class LazyObjectCRUD
 			++$count;
 		}
 
-		if ($this->csvFile->headers !== $expectedCsvHeaders){
-			throw new \Exception("In the csv '" . $this->csvFile->name . "' the actual headers (" . implode(',', $this->csvFile->headers) . ") were not the expected headers (" . implode(',', $expectedCsvHeaders) . ")");
-		}
+        $this->csvFile->validateHeaders($expectedCsvHeaders);
 	}
 }

@@ -52,43 +52,4 @@ class Validator
 			exit();
 		}
 	}
-
-	public function validateParamsAgainstCsv(array $params, string $csvFilename)//: void
-	{
-		$expectedCsvHeaders = [];
-
-		$count = 0;
-
-		foreach($params as $param){
-			$expectedCsvHeaders[$count] = $param->name;
-
-			++$count;
-		}
-
-		$this->validateHeadersAreExpected($expectedCsvHeaders, $csvFilename);
-
-		return $expectedCsvHeaders;
-	}
-
-	public function validateHeadersAreExpected(array $expectedCsvHeaders, string $csvFilename): void
-	{
-		$handle = fopen($csvFilename, 'r');
-
-		$actualCsvHeaders = fgetcsv($handle);
-
-		fclose($handle);
-
-		try {
-			if ($actualCsvHeaders !== $expectedCsvHeaders){
-				throw new \Exception();
-			}
-		} catch (\Throwable $e) {
-			echo "The headers of the csv were not the expected headers.<br>";
-			echo "Expected headers: " . implode(',', $expectedCsvHeaders);
-			echo "<br>";
-			echo "Actual headers: " . implode(',', $actualCsvHeaders);
-			echo "<br>";
-			exit();
-		}
-	}
 }
