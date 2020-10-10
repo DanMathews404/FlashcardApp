@@ -12,17 +12,17 @@ class CardController
 {
 	protected LazyObjectCRUD $cardObjectCRUD;
 
-    protected Redirect $redirect;
+	protected Redirect $redirect;
 
-    protected View $view;
+	protected View $view;
 
 	public function __construct()
 	{
 		$this->cardObjectCRUD = new LazyObjectCRUD();
 
-        $this->redirect = new Redirect();
+		$this->redirect = new Redirect();
 
-        $this->view = new View();
+		$this->view = new View();
 	}
 
 	public function index(): void
@@ -41,7 +41,7 @@ class CardController
 
 	public function createForm()
 	{
-        $this->view->display('Card/createForm.php');
+		$this->view->display('Card/createForm.php');
 	}
 
 	public function create()

@@ -8,6 +8,6 @@ class View
 {
 	public function display(string $file, array $data = null): void
 	{
-	    include $file;
+		include $file;
 	}
 }

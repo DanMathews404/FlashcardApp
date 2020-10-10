@@ -18,7 +18,7 @@ class App
 	{
 		$this->cardController = new CardController();
 
-        $this->redirect = new Redirect();
+		$this->redirect = new Redirect();
 	}
 
 	public function run()
