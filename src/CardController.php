@@ -8,9 +8,13 @@ class CardController
 {
 	protected LazyObjectCRUD $cardObjectCRUD;
 
+    protected Redirect $redirect;
+
 	public function __construct()
 	{
 		$this->cardObjectCRUD = new LazyObjectCRUD();
+
+        $this->redirect = new Redirect();
 	}
 
 	public function index(): void
@@ -35,8 +39,6 @@ class CardController
 	public function create()
 	{
 		$this->cardObjectCRUD->create();
-
-		$this->redirect = new Redirect();
 
 		$this->redirect->go("/index");
 	}

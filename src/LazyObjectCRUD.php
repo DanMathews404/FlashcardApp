@@ -6,7 +6,7 @@ namespace Flashcard;
 
 class LazyObjectCRUD
 {
-	protected File $csvFile;
+	protected CSVFile $csvFile;
 
 	protected File $classFile;
 
@@ -36,7 +36,7 @@ class LazyObjectCRUD
 
 		$this->validator = new Validator();
 
-		$this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
+		$this->incrementalIdGenerator = new IncrementalIdGenerator($className);
 
 		$this->csvFile = new CSVFile("src/" .  $className . "s.csv");
 

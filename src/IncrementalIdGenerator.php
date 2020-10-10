@@ -10,7 +10,7 @@ class IncrementalIdGenerator
 
 	protected int $startOfLine;
 
-	protected int $classLine;
+	protected array $classLine;
 
 	protected File $csvFile;
 
