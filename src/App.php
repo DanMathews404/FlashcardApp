@@ -8,7 +8,7 @@ include '.env.php';
 
 class App
 {
-	protected $cardController;
+	protected CardController $cardController;
 
 	public function __construct()
 	{

@@ -6,8 +6,6 @@ namespace Flashcard;
 
 class LazyObjectCRUD
 {
-	protected $className;
-
 	protected File $csvFile;
 
 	protected File $classFile;
@@ -16,11 +14,9 @@ class LazyObjectCRUD
 
 	protected \ReflectionClass $reflectionClass;
 
-	protected $expectedCsvHeaders;
+	protected array $classConstructorParams;
 
-	protected $classConstructorParams;
-
-	protected $incrementalIdGenerator;
+	protected IncrementalIdGenerator $incrementalIdGenerator;
 
 
 	public function __construct(string $className = null)
@@ -41,8 +37,6 @@ class LazyObjectCRUD
 		$this->validator = new Validator();
 
 		$this->incrementalIdGenerator = new IncrementalIdGenerator('Card');
-
-		$this->className = $className;
 
 		$this->csvFile = new CSVFile("src/" .  $className . "s.csv");
 
@@ -65,7 +59,7 @@ class LazyObjectCRUD
 	{
 		$handle = fopen($this->csvFile->name, 'r');
 
-		$headers = fgetcsv($handle);
+		fgetcsv($handle);
 
 		$results = [];
 
@@ -120,7 +114,7 @@ class LazyObjectCRUD
 		$this->incrementalIdGenerator->set($id);
 	}
 
-	protected function getFieldDataFromObject($object): array
+	protected function getFieldDataFromObject(object $object): array
 	{
 		$fields = [];
 

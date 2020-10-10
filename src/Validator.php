@@ -6,13 +6,12 @@ namespace Flashcard;
 
 class Validator
 {
-	public function validReflectionClass(string $className): ?\ReflectionClass
+	public function validReflectionClass(string $className): \ReflectionClass
 	{
 		try {
 			return new \ReflectionClass(__NAMESPACE__ . '\\' . $className);
 		} catch (\Throwable $e){
-			echo "The Class was not found. It must be in the same namespace as the validator";
-			exit();
+			throw new \Exception("The Class was not found. It must be in the same namespace as the validator");
 		}
 	}
 

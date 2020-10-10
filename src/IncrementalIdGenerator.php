@@ -6,9 +6,11 @@ namespace Flashcard;
 
 class IncrementalIdGenerator
 {
-	protected $className;
+	protected string $className;
 
-	protected $startOfLine;
+	protected int $startOfLine;
+
+    protected int $classLine;
 
 	protected File $csvFile;
 
@@ -55,7 +57,7 @@ class IncrementalIdGenerator
 
 		$line = null;
 
-		$startOfLine = null;
+		$startOfLine = 0;
 
 		while ($line !== false){
 			$startOfLine = ftell($handle);
