@@ -2,7 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Flashcard;
+namespace Flashcard\Controller;
+
+use Flashcard\LazyObjectCRUD;
+use Flashcard\Redirect;
+use Flashcard\View\View;
 
 class CardController
 {
@@ -15,25 +19,27 @@ class CardController
 		$this->cardObjectCRUD = new LazyObjectCRUD();
 
         $this->redirect = new Redirect();
+
+        $this->view = new View();
 	}
 
 	public function index(): void
 	{
 		$cards = $this->cardObjectCRUD->read();
 
-		$cardsView = new CardsView($cards);
+		$data = ['cards' => $cards];
 
-		$cardsView->display();
+		$this->view->display('Card/index.php', $data);
 	}
 
-	public function show($id)
+	public function show(int $id): void
 	{
 		//show individual record
 	}
 
 	public function createForm()
 	{
-		include 'createForm.php';
+        $this->view->display('Card/createForm.php');
 	}
 
 	public function create()

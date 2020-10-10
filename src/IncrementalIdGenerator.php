@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Flashcard;
 
+use Flashcard\File\CSVFile;
+
 class IncrementalIdGenerator
 {
 	protected string $className;
@@ -12,7 +14,9 @@ class IncrementalIdGenerator
 
 	protected array $classLine;
 
-	protected File $csvFile;
+	protected CSVFile $csvFile;
+
+	protected Redirect $redirect;
 
 	public function __construct(string $className)
 	{
@@ -51,7 +55,10 @@ class IncrementalIdGenerator
 		fclose($handle);
 	}
 
-	protected function findClassLine($handle): void
+    /**
+     * @param $handle
+     */
+    protected function findClassLine($handle): void
 	{
 		$found = false;
 

@@ -6,7 +6,7 @@ namespace Flashcard;
 
 class Redirect
 {
-	protected $domain;
+	protected string $domain;
 
 	public function __construct()
 	{
@@ -18,7 +18,7 @@ class Redirect
 		}
 	}
 
-	public function go($uri)
+	public function go(string $uri): void
 	{
 		if ($this->domain == "localhost"){
 			header("Location: http://localhost:" . $_SERVER['SERVER_PORT'] . $uri);

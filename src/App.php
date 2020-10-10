@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Flashcard;
 
+use Flashcard\Controller\CardController;
+
 include '.env.php';
 
 class App

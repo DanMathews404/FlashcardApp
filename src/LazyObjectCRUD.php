@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Flashcard;
 
+use Flashcard\File\File;
+use Flashcard\File\CSVFile;
+
 class LazyObjectCRUD
 {
 	protected CSVFile $csvFile;
