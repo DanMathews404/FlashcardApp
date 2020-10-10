@@ -2,3 +2,4 @@
 /bin/*
 .env.php
 .idea/*
+php_errors.log

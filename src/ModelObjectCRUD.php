@@ -8,13 +8,13 @@ class ModelObjectCRUD
 {
 	protected $className;
 
-	protected $csvFilename;
+	protected File $csvFile;
 
-	protected $classFilename;
+	protected File $classFile;
 
-	protected $validator;
+	protected Validator $validator;
 
-	protected $reflectionClass;
+	protected \ReflectionClass $reflectionClass;
 
 	protected $expectedCsvHeaders;
 
@@ -28,11 +28,9 @@ class ModelObjectCRUD
 
 		$this->className = $className;
 
-		$this->csvFilename = "src//" .  $className . "s.csv";
+		$this->csvFile = new CSVFile("src/" .  $className . "s.csv");
 
-		$this->classFilename = "src//" . $className . ".php";
-
-		$this->validator->validateReadableFiles([$this->csvFilename, $this->classFilename]);
+		$this->classFile = new File("src/" . $className . ".php");
 
 		$this->reflectionClass = $this->validator->validReflectionClass($className);
 
@@ -42,14 +40,16 @@ class ModelObjectCRUD
 
 		$this->validator->validateParamsTypeString($this->classConstructorParams);
 
-		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFilename);
+//		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFile->name);
+
+		$this->validateParamsAgainstHeaders();
 	}
 
 
 
 	public function read(): array
 	{
-		$handle = fopen($this->csvFilename, 'r');
+		$handle = fopen($this->csvFile->name, 'r');
 
 		$headers = fgetcsv($handle);
 
@@ -80,7 +80,7 @@ class ModelObjectCRUD
 
 		$fields = $this->getFieldDataFromObject($object);
 
-		$handle = fopen($this->csvFilename, 'a');
+		$handle = fopen($this->csvFile->name, 'a');
 
 		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
 		fputcsv($handle, $fields);
@@ -99,5 +99,22 @@ class ModelObjectCRUD
 		}
 
 		return $fields;
+	}
+
+	public function validateParamsAgainstHeaders(): void
+	{
+		$expectedCsvHeaders = [];
+
+		$count = 0;
+
+		foreach($this->classConstructorParams as $param){
+			$expectedCsvHeaders[$count] = $param->name;
+
+			++$count;
+		}
+
+		if ($this->csvFile->headers !== $expectedCsvHeaders){
+			throw new \Exception("In the csv '" . $this->csvFile->name . "' the actual headers (" . implode(',', $this->csvFile->headers) . ") were not the expected headers (" . implode(',', $expectedCsvHeaders) . ")");
+		}
 	}
 }
