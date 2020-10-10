@@ -1,7 +1,6 @@
 <style>
 	#embarrassed {
-		margin: auto;
-		margin-top: 30px;
+		margin: 30px auto auto;
 		display: block;
 		max-width: 600px;
 		width: 80%;
@@ -11,9 +10,8 @@
 		font-family: monospace;
 		font-size: 3em;
 		color: #333333;
-		margin: auto;
 		text-align: center;
-		margin-top: 15px;
+		margin: 15px auto auto;
 	}
 </style>
 

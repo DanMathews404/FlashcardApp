@@ -46,7 +46,7 @@ class FeatureContext extends BehatContext
 	public function iShouldReceiveAListOfFlashcards()
 	{
 		if (!is_a($this->app->cardController->cardObjectCRUD->read()[0], 'Flashcard\Card')){
-			throw new Exception("ModelObjectCRUD didn't return a Card object to CardController index");
+			throw new Exception("LazyObjectCRUD didn't return a Card object to CardController index");
 		}
 	}
 }

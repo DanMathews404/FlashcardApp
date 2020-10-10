@@ -6,13 +6,13 @@ namespace Flashcard;
 
 class Card
 {
-	public $id;
+	public string $id;
 
-	public $category;
+	public string $category;
 
-	public $question;
+	public string $question;
 
-	public $answer;
+	public string $answer;
 
 	public function __construct(string $id, string $category, string $question, string $answer)
 	{

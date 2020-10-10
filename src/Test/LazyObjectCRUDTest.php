@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-final class ModelObjectCRUDTest extends TestCase
+final class LazyObjectCRUDTest extends TestCase
 {
 	public function testCanBeCreatedFromValidClassName(): void
 	{
 		$this->assertInstanceOf(
-			'Flashcard\ModelObjectCRUD',
-			new Flashcard\ModelObjectCRUD('Card')
+			'Flashcard\LazyObjectCRUD',
+			new Flashcard\LazyObjectCRUD('Card')
 		);
 	}
 
@@ -18,6 +18,6 @@ final class ModelObjectCRUDTest extends TestCase
 	{
 		$this->expectException(TypeError::class);
 
-		new Flashcard\ModelObjectCRUD([1]);
+		new Flashcard\LazyObjectCRUD([1]);
 	}
 }

@@ -4,13 +4,21 @@ declare(strict_types = 1);
 
 namespace Flashcard;
 
+use Flashcard\Controller\CardController;
+
 include '.env.php';
 
 class App
 {
+	protected CardController $cardController;
+
+	protected Redirect $redirect;
+
 	public function __construct()
 	{
 		$this->cardController = new CardController();
+
+		$this->redirect = new Redirect();
 	}
 
 	public function run()
@@ -24,8 +32,7 @@ class App
 		} elseif (preg_match('/^\/create$/', $uri) == 1) {
 			$this->cardController->create();
 		} else {
-			$this->redirect = new Redirect();
-			$this->redirect->go("/index");
+			$this->redirect->sendTo("/index");
 		}
 	}
 }

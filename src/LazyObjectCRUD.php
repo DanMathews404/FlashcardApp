@@ -4,11 +4,12 @@ declare(strict_types = 1);
 
 namespace Flashcard;
 
-class ModelObjectCRUD
-{
-	protected $className;
+use Flashcard\File\File;
+use Flashcard\File\CSVFile;
 
-	protected File $csvFile;
+class LazyObjectCRUD
+{
+	protected CSVFile $csvFile;
 
 	protected File $classFile;
 
@@ -16,17 +17,29 @@ class ModelObjectCRUD
 
 	protected \ReflectionClass $reflectionClass;
 
-	protected $expectedCsvHeaders;
+	protected array $classConstructorParams;
 
-	protected $classConstructorParams;
+	protected IncrementalIdGenerator $incrementalIdGenerator;
 
 
-
-	public function __construct(string $className)
+	public function __construct(string $className = null)
 	{
+		if ($className == null) {
+			$callingFileName = debug_backtrace()[0]['file'];
+
+			preg_match('/[^\\\]+(?=Controller.php)/', $callingFileName, $matches);
+
+			if ($matches) {
+				$className = $matches[0];
+			} else {
+				echo 'lazyObjectCRUD called from an incompatible filename';
+				exit();
+			}
+		}
+
 		$this->validator = new Validator();
 
-		$this->className = $className;
+		$this->incrementalIdGenerator = new IncrementalIdGenerator($className);
 
 		$this->csvFile = new CSVFile("src/" .  $className . "s.csv");
 
@@ -40,8 +53,6 @@ class ModelObjectCRUD
 
 		$this->validator->validateParamsTypeString($this->classConstructorParams);
 
-//		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFile->name);
-
 		$this->validateParamsAgainstHeaders();
 	}
 
@@ -51,7 +62,7 @@ class ModelObjectCRUD
 	{
 		$handle = fopen($this->csvFile->name, 'r');
 
-		$headers = fgetcsv($handle);
+		fgetcsv($handle);
 
 		$results = [];
 
@@ -74,21 +85,39 @@ class ModelObjectCRUD
 		return $results;
 	}
 
-	public function create(Card $object): void
+	public function create(...$params): void
 	{
-		$this->validator->validateObjectIsInstanceOfClass($object, $this->className);
+		$id = $this->incrementalIdGenerator->getNext();
+
+		$params[0] = $id;
+
+		for ($i = 1; $i < count($this->csvFile->headers); $i++){
+			$params[$i] = $_POST[$this->csvFile->headers[$i]];
+		}
+
+		$object = $this->reflectionClass->newInstance(...$params);
 
 		$fields = $this->getFieldDataFromObject($object);
 
-		$handle = fopen($this->csvFile->name, 'a');
+		$handle = fopen($this->csvFile->name, 'a+');
+
+		fseek($handle, fstat($handle)['size'] - 1);
+
+		$lastCharacter = fread($handle, 1);
+
+		if($lastCharacter !== "\n"){
+			fwrite($handle, "\n");
+		}
 
 		//TODO fputcsv doesn't put double quotes around everything, this feels inconsistent - replace with fwrite?
 		fputcsv($handle, $fields);
 
 		fclose($handle);
+
+		$this->incrementalIdGenerator->set($id);
 	}
 
-	protected function getFieldDataFromObject($object): array
+	protected function getFieldDataFromObject(object $object): array
 	{
 		$fields = [];
 
@@ -113,8 +142,6 @@ class ModelObjectCRUD
 			++$count;
 		}
 
-		if ($this->csvFile->headers !== $expectedCsvHeaders){
-			throw new \Exception("In the csv '" . $this->csvFile->name . "' the actual headers (" . implode(',', $this->csvFile->headers) . ") were not the expected headers (" . implode(',', $expectedCsvHeaders) . ")");
-		}
+		$this->csvFile->validateHeaders($expectedCsvHeaders);
 	}
 }

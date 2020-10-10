@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Flashcard;
+namespace Flashcard\File;
 
 class CSVFile extends File
 {
@@ -32,5 +32,12 @@ class CSVFile extends File
 		fclose($handle);
 
 		return $headers;
+	}
+
+	public function validateHeaders(array $expectedHeaders): void
+	{
+		if ($this->headers !== $expectedHeaders){
+			throw new \Exception("In the csv '" . $this->name . "' the actual headers (" . implode(', ', $this->headers) . ") were not the expected headers (" . implode(', ', $expectedHeaders) . ")");
+		}
 	}
 }
