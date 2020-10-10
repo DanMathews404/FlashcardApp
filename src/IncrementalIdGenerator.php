@@ -16,7 +16,7 @@ class IncrementalIdGenerator
 
 	protected CSVFile $csvFile;
 
-	protected Redirect $redirect;
+	protected Validator $validator;
 
 	public function __construct(string $className)
 	{
@@ -62,7 +62,7 @@ class IncrementalIdGenerator
 	{
 		$found = false;
 
-		$line = null;
+		$line = [];
 
 		$startOfLine = 0;
 
@@ -81,6 +81,15 @@ class IncrementalIdGenerator
 			echo "No line matching class '" . $this->className . "' in '" . $this->csvFile->name . "'";
 			exit();
 		}
+
+		//TODO move this logic to the CSVFile class
+		if (!is_array($line)){
+		    throw new \Exception("Couldn't get an array from a line in csv '" . $this->csvFile->name . "'");
+        }
+
+        if (count($line) !== count($this->csvFile->headers)){
+            throw new \Exception("Couldn't get an array of expected length (" . count($this->csvFile->headers) . ") from a line in csv '" . $this->csvFile->name . "'");
+        }
 
 		$this->classLine = $line;
 		$this->startOfLine = $startOfLine;

@@ -14,6 +14,8 @@ class CardController
 
     protected Redirect $redirect;
 
+    protected View $view;
+
 	public function __construct()
 	{
 		$this->cardObjectCRUD = new LazyObjectCRUD();
