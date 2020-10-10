@@ -8,7 +8,7 @@ class IncrementalIdGenerator
 {
 	protected File $csvFile;
 
-    public function __construct(string $className)
+	public function __construct(string $className)
 	{
 		$this->validator = new Validator();
 

@@ -28,9 +28,9 @@ class ModelObjectCRUD
 
 		$this->className = $className;
 
-		$this->csvFile = new File("src//" .  $className . "s.csv");
+		$this->csvFile = new CSVFile("src/" .  $className . "s.csv");
 
-		$this->classFile = new File("src//" . $className . ".php");
+		$this->classFile = new File("src/" . $className . ".php");
 
 		$this->reflectionClass = $this->validator->validReflectionClass($className);
 
@@ -40,7 +40,9 @@ class ModelObjectCRUD
 
 		$this->validator->validateParamsTypeString($this->classConstructorParams);
 
-		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFile->name);
+//		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFile->name);
+
+		$this->validateParamsAgainstHeaders();
 	}
 
 
@@ -97,5 +99,22 @@ class ModelObjectCRUD
 		}
 
 		return $fields;
+	}
+
+	public function validateParamsAgainstHeaders(): void
+	{
+		$expectedCsvHeaders = [];
+
+		$count = 0;
+
+		foreach($this->classConstructorParams as $param){
+			$expectedCsvHeaders[$count] = $param->name;
+
+			++$count;
+		}
+
+		if ($this->csvFile->headers !== $expectedCsvHeaders){
+			throw new \Exception("In the csv '" . $this->csvFile->name . "' the actual headers (" . implode(',', $this->csvFile->headers) . ") were not the expected headers (" . implode(',', $expectedCsvHeaders) . ")");
+		}
 	}
 }
