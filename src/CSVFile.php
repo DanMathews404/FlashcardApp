@@ -35,9 +35,9 @@ class CSVFile extends File
 	}
 
 	public function validateHeaders(array $expectedHeaders): void
-    {
-        if ($this->headers !== $expectedHeaders){
-            throw new \Exception("In the csv '" . $this->name . "' the actual headers (" . implode(',', $this->headers) . ") were not the expected headers (" . implode(',', $expectedHeaders) . ")");
-        }
-    }
+	{
+		if ($this->headers !== $expectedHeaders){
+			throw new \Exception("In the csv '" . $this->name . "' the actual headers (" . implode(',', $this->headers) . ") were not the expected headers (" . implode(',', $expectedHeaders) . ")");
+		}
+	}
 }

@@ -139,6 +139,6 @@ class LazyObjectCRUD
 			++$count;
 		}
 
-        $this->csvFile->validateHeaders($expectedCsvHeaders);
+		$this->csvFile->validateHeaders($expectedCsvHeaders);
 	}
 }

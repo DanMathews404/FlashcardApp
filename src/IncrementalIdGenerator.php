@@ -10,7 +10,7 @@ class IncrementalIdGenerator
 
 	protected int $startOfLine;
 
-    protected int $classLine;
+	protected int $classLine;
 
 	protected File $csvFile;
 
@@ -22,7 +22,7 @@ class IncrementalIdGenerator
 
 		$this->className = $className;
 
-        $this->csvFile->validateHeaders(['model', 'id']);
+		$this->csvFile->validateHeaders(['model', 'id']);
 	}
 
 	public function getNext(): string
