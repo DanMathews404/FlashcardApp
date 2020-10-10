@@ -18,7 +18,7 @@ class Redirect
 		}
 	}
 
-	public function go(string $uri): void
+	public function sendTo(string $uri): void
 	{
 		if ($this->domain == "localhost"){
 			header("Location: http://localhost:" . $_SERVER['SERVER_PORT'] . $uri);

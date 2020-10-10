@@ -29,7 +29,7 @@ class App
 			$this->cardController->create();
 		} else {
 			$this->redirect = new Redirect();
-			$this->redirect->go("/index");
+			$this->redirect->sendTo("/index");
 		}
 	}
 }

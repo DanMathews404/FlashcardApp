@@ -46,7 +46,7 @@ class CardController
 	{
 		$this->cardObjectCRUD->create();
 
-		$this->redirect->go("/index");
+		$this->redirect->sendTo("/index");
 	}
 
 	public function edit()
