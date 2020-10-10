@@ -10,24 +10,22 @@ class IncrementalIdGenerator
 
 	protected $startOfLine;
 
+	protected File $csvFile;
+
 	public function __construct(string $className)
 	{
 		$this->validator = new Validator();
 
-		$this->filename = 'src/IncrementalIdGenerator.csv';
+		$this->csvFile = new File ("src/IncrementalIdGenerator.csv");
 
 		$this->className = $className;
 
-		$this->validator->validateReadableFiles([$this->filename]);
-
-		$this->validator->validateWritableFiles([$this->filename]);
-
-		$this->validator->validateHeadersAreExpected(['model', 'id'], $this->filename);
+		$this->validator->validateHeadersAreExpected(['model', 'id'], $this->csvFile->name);
 	}
 
 	public function getNext(): string
 	{
-		$handle = fopen($this->filename, 'r+');
+		$handle = fopen($this->csvFile->name, 'r+');
 
 		$this->findClassLine($handle);
 
@@ -40,7 +38,7 @@ class IncrementalIdGenerator
 
 	public function set(string $id): void
 	{
-		$handle = fopen($this->filename, 'r+');
+		$handle = fopen($this->csvFile->name, 'r+');
 
 		$this->findClassLine($handle);
 
@@ -71,7 +69,7 @@ class IncrementalIdGenerator
 		}
 
 		if ($found == false){
-			echo "No line matching class '" . $this->className . "' in '" . $this->filename . "'";
+			echo "No line matching class '" . $this->className . "' in '" . $this->csvFile->name . "'";
 			exit();
 		}
 

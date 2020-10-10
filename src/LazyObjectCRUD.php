@@ -8,13 +8,13 @@ class LazyObjectCRUD
 {
 	protected $className;
 
-	protected $csvFilename;
+	protected File $csvFile;
 
-	protected $classFilename;
+	protected File $classFile;
 
-	protected $validator;
+	protected Validator $validator;
 
-	protected $reflectionClass;
+	protected \ReflectionClass $reflectionClass;
 
 	protected $expectedCsvHeaders;
 
@@ -44,11 +44,9 @@ class LazyObjectCRUD
 
 		$this->className = $className;
 
-		$this->csvFilename = "src//" . $className . "s.csv";
+		$this->csvFile = new CSVFile("src/" .  $className . "s.csv");
 
-		$this->classFilename = "src//" . $className . ".php";
-
-		$this->validator->validateReadableFiles([$this->csvFilename, $this->classFilename]);
+		$this->classFile = new File("src/" . $className . ".php");
 
 		$this->reflectionClass = $this->validator->validReflectionClass($className);
 
@@ -58,14 +56,16 @@ class LazyObjectCRUD
 
 		$this->validator->validateParamsTypeString($this->classConstructorParams);
 
-		$this->params = $this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFilename);
+//		$this->validator->validateParamsAgainstCsv($this->classConstructorParams, $this->csvFile->name);
+
+		$this->validateParamsAgainstHeaders();
 	}
 
 
 
 	public function read(): array
 	{
-		$handle = fopen($this->csvFilename, 'r');
+		$handle = fopen($this->csvFile->name, 'r');
 
 		$headers = fgetcsv($handle);
 
@@ -96,15 +96,15 @@ class LazyObjectCRUD
 
 		$params[0] = $id;
 
-		for ($i = 1; $i < count($this->params); $i++){
-			$params[$i] = $_POST[$this->params[$i]];
+		for ($i = 1; $i < count($this->csvFile->headers); $i++){
+			$params[$i] = $_POST[$this->csvFile->headers[$i]];
 		}
 
 		$object = $this->reflectionClass->newInstance(...$params);
 
 		$fields = $this->getFieldDataFromObject($object);
 
-		$handle = fopen($this->csvFilename, 'a+');
+		$handle = fopen($this->csvFile->name, 'a+');
 
 		fseek($handle, fstat($handle)['size'] - 1);
 
@@ -133,5 +133,22 @@ class LazyObjectCRUD
 		}
 
 		return $fields;
+	}
+
+	public function validateParamsAgainstHeaders(): void
+	{
+		$expectedCsvHeaders = [];
+
+		$count = 0;
+
+		foreach($this->classConstructorParams as $param){
+			$expectedCsvHeaders[$count] = $param->name;
+
+			++$count;
+		}
+
+		if ($this->csvFile->headers !== $expectedCsvHeaders){
+			throw new \Exception("In the csv '" . $this->csvFile->name . "' the actual headers (" . implode(',', $this->csvFile->headers) . ") were not the expected headers (" . implode(',', $expectedCsvHeaders) . ")");
+		}
 	}
 }
