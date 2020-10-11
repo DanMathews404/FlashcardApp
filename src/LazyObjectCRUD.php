@@ -85,15 +85,54 @@ class LazyObjectCRUD
 		return $results;
 	}
 
+	public function delete(string $id): void
+	{
+		$handle = fopen($this->csvFile->name, 'r+');
+
+		fgetcsv($handle);
+
+		$found = false;
+
+		while (!feof($handle)){
+			$lineStart = ftell($handle);
+
+			$row = fgetcsv($handle);
+
+			$lineEnd = ftell($handle);
+
+			if (!$row){
+				continue;
+			}
+
+			if ($row[0] == $id){
+				$this->reflectionClass->newInstance(...$row);
+
+				$found = true;
+
+				break;
+			}
+		}
+
+		if($found !== true){
+			throw new \Exception("no object of id " . $id . " found in " . $this->csvFile->name);
+		}
+
+		$contentsToEndOfFile = file_get_contents($this->csvFile->name, false, null, $lineEnd);
+
+		fseek($handle, $lineStart);
+
+		fwrite($handle, $contentsToEndOfFile);
+
+		ftruncate($handle, ftell($handle));
+
+		fclose($handle);
+	}
+
 	public function create(...$params): void
 	{
 		$id = $this->incrementalIdGenerator->getNext();
 
-		$params[0] = $id;
-
-		for ($i = 1; $i < count($this->csvFile->headers); $i++){
-			$params[$i] = $_POST[$this->csvFile->headers[$i]];
-		}
+		array_unshift($params, $id);
 
 		$object = $this->reflectionClass->newInstance(...$params);
 

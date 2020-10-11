@@ -30,7 +30,9 @@ class App
 		} elseif (preg_match('/^\/createForm$/', $uri) == 1) {
 			$this->cardController->createForm();
 		} elseif (preg_match('/^\/create$/', $uri) == 1) {
-			$this->cardController->create();
+			$this->cardController->create($_POST['category'], $_POST['question'], $_POST['answer']);
+		} elseif (preg_match('/^\/delete$/', $uri) == 1) {
+			$this->cardController->delete($_POST['id']);
 		} else {
 			$this->redirect->sendTo("/index");
 		}
