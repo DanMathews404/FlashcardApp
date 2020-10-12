@@ -6,7 +6,7 @@ namespace Flashcard;
 
 class Card
 {
-	public string $id;
+	public ?string $id;
 
 	public string $category;
 
@@ -14,7 +14,7 @@ class Card
 
 	public string $answer;
 
-	public function __construct(string $id, string $category, string $question, string $answer)
+	public function __construct(?string $id, string $category, string $question, string $answer)
 	{
 		$this->id = $id;
 		$this->category = $category;

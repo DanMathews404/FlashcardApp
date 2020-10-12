@@ -91,6 +91,10 @@ class LazyObjectCRUD
 
 		fgetcsv($handle);
 
+		$lineStart = 0;
+
+		$lineEnd = 0;
+
 		$found = false;
 
 		while (!feof($handle)){
@@ -128,13 +132,11 @@ class LazyObjectCRUD
 		fclose($handle);
 	}
 
-	public function create(...$params): void
+    public function create(object $object): ?object
 	{
 		$id = $this->incrementalIdGenerator->getNext();
 
-		array_unshift($params, $id);
-
-		$object = $this->reflectionClass->newInstance(...$params);
+		$object->id = $id;
 
 		$fields = $this->getFieldDataFromObject($object);
 
@@ -154,6 +156,8 @@ class LazyObjectCRUD
 		fclose($handle);
 
 		$this->incrementalIdGenerator->set($id);
+
+		return $object;
 	}
 
 	protected function getFieldDataFromObject(object $object): array

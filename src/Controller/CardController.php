@@ -4,51 +4,42 @@ declare(strict_types = 1);
 
 namespace Flashcard\Controller;
 
+use Flashcard\Card;
 use Flashcard\LazyObjectCRUD;
-use Flashcard\Redirect;
-use Flashcard\View\View;
 
 class CardController
 {
 	protected LazyObjectCRUD $cardObjectCRUD;
 
-	protected Redirect $redirect;
-
-	protected View $view;
-
 	public function __construct()
 	{
 		$this->cardObjectCRUD = new LazyObjectCRUD();
-
-		$this->redirect = new Redirect();
-
-		$this->view = new View();
 	}
 
-	public function index(): void
+	public function index(): array
 	{
-		$cards = $this->cardObjectCRUD->read();
-
-		$data = ['cards' => $cards];
-
-		$this->view->display('Card/index.php', $data);
+		return $this->cardObjectCRUD->read();
 	}
 
-	public function show(string $id): void
+	public function show(string $id): Card
 	{
 		//show individual record
 	}
 
-	public function createForm()
+	//TODO use union types when available in php 8 to throw void or error string or exception etc.
+	public function create(string $category, string $question, string $answer): ?Card //| void
 	{
-		$this->view->display('Card/createForm.php');
-	}
+		$card = new Card(null, $category, $question, $answer);
 
-	public function create(string $category, string $question, string $answer)
-	{
-		$this->cardObjectCRUD->create($category, $question, $answer);
+        $createdCard = $this->cardObjectCRUD->create($card);
 
-		$this->redirect->sendTo("/index");
+		if (get_class($createdCard) == 'Flashcard\Card'){
+            http_response_code(201);
+            return $createdCard;
+        } else {
+//		    return throw new \Exception("returned object was not of the Card class");
+		    return null;
+        }
 	}
 
 	public function edit()
@@ -65,6 +56,8 @@ class CardController
 	{
 		$this->cardObjectCRUD->delete($id);
 
-		$this->redirect->sendTo("/index");
+        http_response_code(204);
+
+        return null;
 	}
 }
