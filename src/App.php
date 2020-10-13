@@ -39,6 +39,8 @@ class App
                 $response = $this->cardController->create($_POST['category'], $_POST['question'], $_POST['answer']);
             } elseif (preg_match('/^\/api\/delete$/', $uri) == 1) {
                 $response = $this->cardController->delete($_POST['id']);
+            } elseif (preg_match('/(?<=^\/api\/show\/)[0-9]+$/', $uri, $matches) == 1) {
+                $response = $this->cardController->show($matches[0]);
             } else {
                 http_response_code(404);
                 $response = 'Endpoint not found';
@@ -56,6 +58,8 @@ class App
                 $this->cardControllerViewWrapper->create($_POST['category'], $_POST['question'], $_POST['answer']);
             } elseif (preg_match('/^\/delete$/', $uri) == 1) {
                 $this->cardControllerViewWrapper->delete($_POST['id']);
+            } elseif (preg_match('/(?<=^\/show\/)[0-9]+$/', $uri, $matches) == 1) {
+                $this->cardControllerViewWrapper->show($matches[0]);
             } else {
 			    $this->redirect->sendTo("/index");
             }

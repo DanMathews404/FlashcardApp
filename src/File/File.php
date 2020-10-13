@@ -13,8 +13,6 @@ class File
 		$this->name = $name;
 
 		$this->validateActions($readable, $writable);
-
-		return $this;
 	}
 
 	protected function validateActions(bool $readable, bool $writable): void

@@ -85,45 +85,28 @@ class LazyObjectCRUD
 		return $results;
 	}
 
+
+    public function get(string $id)
+    {
+        $handle = fopen($this->csvFile->name, 'r+');
+
+        $matchingRow = $this->getRowFromId($handle, $id);
+
+        fclose($handle);
+
+        return $matchingRow->rowObject;
+    }
+
+
 	public function delete(string $id): void
 	{
 		$handle = fopen($this->csvFile->name, 'r+');
 
-		fgetcsv($handle);
+        $matchingRow = $this->getRowFromId($handle, $id);
 
-		$lineStart = 0;
+		$contentsToEndOfFile = file_get_contents($this->csvFile->name, false, null, $matchingRow->lineEnd);
 
-		$lineEnd = 0;
-
-		$found = false;
-
-		while (!feof($handle)){
-			$lineStart = ftell($handle);
-
-			$row = fgetcsv($handle);
-
-			$lineEnd = ftell($handle);
-
-			if (!$row){
-				continue;
-			}
-
-			if ($row[0] == $id){
-				$this->reflectionClass->newInstance(...$row);
-
-				$found = true;
-
-				break;
-			}
-		}
-
-		if($found !== true){
-			throw new \Exception("no object of id " . $id . " found in " . $this->csvFile->name);
-		}
-
-		$contentsToEndOfFile = file_get_contents($this->csvFile->name, false, null, $lineEnd);
-
-		fseek($handle, $lineStart);
+		fseek($handle, $matchingRow->lineStart);
 
 		fwrite($handle, $contentsToEndOfFile);
 
@@ -159,6 +142,49 @@ class LazyObjectCRUD
 
 		return $object;
 	}
+
+
+	protected function getRowFromId ($handle, $id)
+    {
+        fgetcsv($handle);
+
+        $lineStart = 0;
+
+        $lineEnd = 0;
+
+        $found = false;
+
+        while (!feof($handle)){
+            $lineStart = ftell($handle);
+
+            $row = fgetcsv($handle);
+
+            $lineEnd = ftell($handle);
+
+            if (!$row){
+                continue;
+            }
+
+            if ($row[0] == $id){
+                $rowObject = $this->reflectionClass->newInstance(...$row);
+
+                $found = true;
+
+                break;
+            }
+        }
+
+        if($found !== true){
+            throw new \Exception("no object of id " . $id . " found in " . $this->csvFile->name);
+        }
+
+        return (object)[
+            'row' => $row,
+            'rowObject' => $rowObject,
+            'lineStart' => $lineStart,
+            'lineEnd' => $lineEnd
+        ];
+    }
 
 	protected function getFieldDataFromObject(object $object): array
 	{

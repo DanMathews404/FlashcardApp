@@ -23,7 +23,7 @@ class CardController
 
 	public function show(string $id): Card
 	{
-		//show individual record
+        return $this->cardObjectCRUD->get($id);
 	}
 
 	//TODO use union types when available in php 8 to throw void or error string or exception etc.
