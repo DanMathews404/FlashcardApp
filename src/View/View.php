@@ -8,6 +8,7 @@ class View
 {
 	public function display(string $file, array $data = null): void
 	{
+	    include 'template.php';
 		include $file;
 	}
 }
