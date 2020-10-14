@@ -10,5 +10,8 @@
 	},
 	"config": {
 		"bin-dir": "bin/"
+	},
+	"require": {
+		"ext-json": "*"
 	}
 }
