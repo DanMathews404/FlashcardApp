@@ -25,13 +25,13 @@
 		padding:0;
 	}
 
-    .card {
-        cursor: default;
-    }
+	.card {
+		cursor: default;
+	}
 
-    .card table {
-        font-size: inherit;
-    }
+	.card table {
+		font-size: inherit;
+	}
 
 
 </style>

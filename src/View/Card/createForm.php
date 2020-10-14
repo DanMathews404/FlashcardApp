@@ -1,17 +1,17 @@
 <style>
-    input {
-        width: 100%;
-    }
-    form {
-        width: 50%;
-        margin: auto;
-        display: block;
-    }
-    #submit {
-        width: 20%;
-        margin: auto;
-        display: block;
-    }
+	input {
+		width: 100%;
+	}
+	form {
+		width: 50%;
+		margin: auto;
+		display: block;
+	}
+	#submit {
+		width: 20%;
+		margin: auto;
+		display: block;
+	}
 </style>
 
 <h1>Create form</h1><br><br>

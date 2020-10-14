@@ -86,23 +86,23 @@ class LazyObjectCRUD
 	}
 
 
-    public function get(string $id)
-    {
-        $handle = fopen($this->csvFile->name, 'r+');
+	public function get(string $id)
+	{
+		$handle = fopen($this->csvFile->name, 'r+');
 
-        $matchingRow = $this->getRowFromId($handle, $id);
+		$matchingRow = $this->getRowFromId($handle, $id);
 
-        fclose($handle);
+		fclose($handle);
 
-        return $matchingRow->rowObject;
-    }
+		return $matchingRow->rowObject;
+	}
 
 
 	public function delete(string $id): void
 	{
 		$handle = fopen($this->csvFile->name, 'r+');
 
-        $matchingRow = $this->getRowFromId($handle, $id);
+		$matchingRow = $this->getRowFromId($handle, $id);
 
 		$contentsToEndOfFile = file_get_contents($this->csvFile->name, false, null, $matchingRow->lineEnd);
 
@@ -115,7 +115,7 @@ class LazyObjectCRUD
 		fclose($handle);
 	}
 
-    public function create(object $object): ?object
+	public function create(object $object): ?object
 	{
 		$id = $this->incrementalIdGenerator->getNext();
 
@@ -145,46 +145,46 @@ class LazyObjectCRUD
 
 
 	protected function getRowFromId ($handle, $id)
-    {
-        fgetcsv($handle);
+	{
+		fgetcsv($handle);
 
-        $lineStart = 0;
+		$lineStart = 0;
 
-        $lineEnd = 0;
+		$lineEnd = 0;
 
-        $found = false;
+		$found = false;
 
-        while (!feof($handle)){
-            $lineStart = ftell($handle);
+		while (!feof($handle)){
+			$lineStart = ftell($handle);
 
-            $row = fgetcsv($handle);
+			$row = fgetcsv($handle);
 
-            $lineEnd = ftell($handle);
+			$lineEnd = ftell($handle);
 
-            if (!$row){
-                continue;
-            }
+			if (!$row){
+				continue;
+			}
 
-            if ($row[0] == $id){
-                $rowObject = $this->reflectionClass->newInstance(...$row);
+			if ($row[0] == $id){
+				$rowObject = $this->reflectionClass->newInstance(...$row);
 
-                $found = true;
+				$found = true;
 
-                break;
-            }
-        }
+				break;
+			}
+		}
 
-        if($found !== true){
-            throw new \Exception("no object of id " . $id . " found in " . $this->csvFile->name);
-        }
+		if($found !== true){
+			throw new \Exception("no object of id " . $id . " found in " . $this->csvFile->name);
+		}
 
-        return (object)[
-            'row' => $row,
-            'rowObject' => $rowObject,
-            'lineStart' => $lineStart,
-            'lineEnd' => $lineEnd
-        ];
-    }
+		return (object)[
+			'row' => $row,
+			'rowObject' => $rowObject,
+			'lineStart' => $lineStart,
+			'lineEnd' => $lineEnd
+		];
+	}
 
 	protected function getFieldDataFromObject(object $object): array
 	{

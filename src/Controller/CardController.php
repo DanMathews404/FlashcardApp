@@ -23,7 +23,7 @@ class CardController
 
 	public function show(string $id): Card
 	{
-        return $this->cardObjectCRUD->get($id);
+		return $this->cardObjectCRUD->get($id);
 	}
 
 	//TODO use union types when available in php 8 to throw void or error string or exception etc.
@@ -31,15 +31,14 @@ class CardController
 	{
 		$card = new Card(null, $category, $question, $answer);
 
-        $createdCard = $this->cardObjectCRUD->create($card);
+		$createdCard = $this->cardObjectCRUD->create($card);
 
 		if (get_class($createdCard) == 'Flashcard\Card'){
-            http_response_code(201);
-            return $createdCard;
-        } else {
-//		    return throw new \Exception("returned object was not of the Card class");
-		    return null;
-        }
+			return $createdCard;
+		} else {
+//			return throw new \Exception("returned object was not of the Card class");
+			return null;
+		}
 	}
 
 	public function edit()
@@ -56,8 +55,6 @@ class CardController
 	{
 		$this->cardObjectCRUD->delete($id);
 
-        http_response_code(204);
-
-        return null;
+		return null;
 	}
 }
