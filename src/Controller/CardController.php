@@ -34,7 +34,7 @@ class CardController
 		$this->view->display('Card/index.php', $data);
 	}
 
-	public function show(int $id): void
+	public function show(string $id): void
 	{
 		//show individual record
 	}
@@ -44,9 +44,9 @@ class CardController
 		$this->view->display('Card/createForm.php');
 	}
 
-	public function create()
+	public function create(string $category, string $question, string $answer)
 	{
-		$this->cardObjectCRUD->create();
+		$this->cardObjectCRUD->create($category, $question, $answer);
 
 		$this->redirect->sendTo("/index");
 	}
@@ -61,8 +61,10 @@ class CardController
 		//update record
 	}
 
-	public function delete()
+	public function delete(string $id)
 	{
-		//remove record
+		$this->cardObjectCRUD->delete($id);
+
+		$this->redirect->sendTo("/index");
 	}
 }

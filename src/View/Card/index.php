@@ -44,6 +44,10 @@ foreach($data['cards'] as $card){
 				<td style="width:100%;"><?php echo "Answer: " . $card->answer;?></td>
 			</tr>
 		</table>
+		<form action="/delete" method="post">
+			<input type="hidden" id="id" name="id" value="<?php echo $card->id ?>"<br>
+			<input type="submit" value="Delete">
+		</form>
 	</div>
 	<?php
 }
