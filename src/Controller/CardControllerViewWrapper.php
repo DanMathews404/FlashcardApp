@@ -11,7 +11,7 @@ class CardControllerViewWrapper
 {
 	protected CardController $cardController;
 
-    protected Redirect $redirect;
+	protected Redirect $redirect;
 
 	protected View $view;
 
@@ -19,7 +19,7 @@ class CardControllerViewWrapper
 	{
 		$this->cardController = $cardController;
 
-        $this->redirect = $redirect;
+		$this->redirect = $redirect;
 
 		$this->view = new View();
 	}
@@ -35,11 +35,11 @@ class CardControllerViewWrapper
 
 	public function show(...$params): void
 	{
-        $card = $this->cardController->show(...$params);
+		$card = $this->cardController->show(...$params);
 
-        $data = ['cards' => [$card]];
+		$data = ['cards' => [$card]];
 
-        $this->view->display('Card/index.php', $data);
+		$this->view->display('Card/index.php', $data);
 	}
 
 	public function createForm(): void
@@ -49,7 +49,7 @@ class CardControllerViewWrapper
 
 	public function create(...$params): void
 	{
-        $this->cardController->create(...$params);
+		$this->cardController->create(...$params);
 
 		$this->redirect->sendTo("/index");
 	}
@@ -66,7 +66,7 @@ class CardControllerViewWrapper
 
 	public function delete(...$params): void
 	{
-        $this->cardController->delete(...$params);
+		$this->cardController->delete(...$params);
 
 		$this->redirect->sendTo("/index");
 	}
