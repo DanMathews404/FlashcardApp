@@ -36,7 +36,11 @@ class CardControllerViewWrapper
 
 	public function show(...$params): void
 	{
-		//show individual record
+        $card = $this->cardController->show(...$params);
+
+        $data = ['cards' => [$card]];
+
+        $this->view->display('Card/index.php', $data);
 	}
 
 	public function createForm(): void
@@ -51,9 +55,9 @@ class CardControllerViewWrapper
 		$this->redirect->sendTo("/index");
 	}
 
-	public function edit(): void
+	public function updateForm(): void
 	{
-		//return edit view
+		//return update form view
 	}
 
 	public function update(): void

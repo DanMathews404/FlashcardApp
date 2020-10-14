@@ -15,8 +15,6 @@ class CSVFile extends File
 		parent::__construct($name, $readable, $writable);
 
 		$this->headers = $this->getHeaders();
-
-		return $this;
 	}
 
 	protected function getHeaders(): array
