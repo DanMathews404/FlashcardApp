@@ -34,7 +34,6 @@ class CardController
         $createdCard = $this->cardObjectCRUD->create($card);
 
 		if (get_class($createdCard) == 'Flashcard\Card'){
-            http_response_code(201);
             return $createdCard;
         } else {
 //		    return throw new \Exception("returned object was not of the Card class");
@@ -55,8 +54,6 @@ class CardController
 	public function delete(string $id)
 	{
 		$this->cardObjectCRUD->delete($id);
-
-        http_response_code(204);
 
         return null;
 	}

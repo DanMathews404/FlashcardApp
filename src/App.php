@@ -35,12 +35,16 @@ class App
 
             if (preg_match('/^\/api\/index$/', $uri) == 1) {
                 $response = $this->cardController->index();
+                http_response_code(200);
             } elseif (preg_match('/^\/api\/create$/', $uri) == 1) {
                 $response = $this->cardController->create($_POST['category'], $_POST['question'], $_POST['answer']);
+                http_response_code(201);
             } elseif (preg_match('/^\/api\/delete$/', $uri) == 1) {
                 $response = $this->cardController->delete($_POST['id']);
+                http_response_code(204);
             } elseif (preg_match('/(?<=^\/api\/show\/)[0-9]+$/', $uri, $matches) == 1) {
                 $response = $this->cardController->show($matches[0]);
+                http_response_code(200);
             } else {
                 http_response_code(404);
                 $response = 'Endpoint not found';

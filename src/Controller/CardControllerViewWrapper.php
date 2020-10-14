@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Flashcard\Controller;
 
-use Flashcard\LazyObjectCRUD;
 use Flashcard\Redirect;
 use Flashcard\View\View;
 
